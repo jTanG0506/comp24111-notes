@@ -1,0 +1,9 @@
+[0] Config.pm:343> INFO - This is Biber 2.5
+[0] Config.pm:346> INFO - Logfile is '/Users/jTanG/Desktop/comp24111-notes/.texpadtmp/main.blg'
+[46] biber-darwin:290> INFO - === Tue Jan  2, 2018, 22:07:04
+[66] Biber.pm:351> INFO - Reading '/Users/jTanG/Desktop/comp24111-notes/.texpadtmp/main.bcf'
+[155] Biber.pm:776> INFO - Found 0 citekeys in bib section 0
+[162] Utils.pm:149> WARN - The file '/Users/jTanG/Desktop/comp24111-notes/.texpadtmp/main.bcf' does not contain any citations!
+[167] bbl.pm:526> INFO - Writing '/Users/jTanG/Desktop/comp24111-notes/.texpadtmp/main.bbl' with encoding 'UTF-8'
+[167] bbl.pm:619> INFO - Output to /Users/jTanG/Desktop/comp24111-notes/.texpadtmp/main.bbl
+[167] Biber.pm:108> INFO - WARNINGS: 1

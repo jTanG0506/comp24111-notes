@@ -1,0 +1,509 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Compiling this template:
+% This template uses biber for its bibliography and makeindex for its index.
+% When you first open the template, compile it from the command line with the 
+% commands below to make sure your LaTeX distribution is configured correctly:
+%
+% 1) pdflatex main
+% 2) makeindex main.idx -s StyleInd.ist
+% 3) biber main
+% 4) pdflatex main x 2
+%
+% After this, when you wish to update the bibliography/index use the appropriate
+% command above and make sure to compile with pdflatex several times 
+% afterwards to propagate your changes to the document.
+%
+% This template also uses a number of packages which may need to be
+% updated to the newest versions for the template to compile. It is strongly
+% recommended you update your LaTeX distribution if you have any
+% compilation errors.
+%
+% Important note:
+% Chapter heading images should have a 2:1 width:height ratio,
+% e.g. 920px width and 460px height.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt,fleqn]{book} % Default font size and left-justified equations
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{parcolumns}
+
+%----------------------------------------------------------------------------------------
+
+\input{structure}
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begingroup
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\node[inner sep=0pt] (background) at (current page.center) {\includegraphics[width=\paperwidth]{background}};
+\draw (current page.center) node [fill=white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][][t]{\paperwidth}{\centering Machine Learning and Optimisation\\[15pt]
+{\Large COMP24111 Course Notes}\\[20pt]
+{\huge Jonathan Tang}}};
+\end{tikzpicture}
+\vfill
+\endgroup
+
+%----------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%----------------------------------------------------------------------------------------
+
+\newpage
+~\vfill
+\thispagestyle{empty}
+
+\noindent Copyright \copyright\ 2017 Jonathan Tang\\
+
+\noindent \textbf{jtang0506.github.io}
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+%\usechapterimagefalse % If you don't want to include a chapter image, use this to toggle images off - it can be enabled later with \usechapterimagetrue
+
+\chapterimage{chapter_head_1.pdf} % Table of contents heading image
+
+\pagestyle{empty} % No headers
+
+\tableofcontents % Print the table of contents itself
+
+\cleardoublepage % Forces the first chapter to start on an odd page so it's on the right
+
+\pagestyle{fancy} % Print headers again
+
+%----------------------------------------------------------------------------------------
+%	PART 1
+%----------------------------------------------------------------------------------------
+
+\part{Section I}
+
+%----------------------------------------------------------------------------------------
+%	Introduction to Machine Learning
+%----------------------------------------------------------------------------------------
+
+\chapterimage{chapter_head_2.pdf} % Chapter heading image
+
+\chapter{Introduction to Machine Learning}
+
+\section{Supervised learning}\index{supervised learning}
+In \textbf{supervised learning} problems, there is an input, $X$, an output, $Y$, and the task is to learn the relationship between the input and the output. A training example in supervised learning is the pair ($x$, $y$) where $x$ is the input and $y$ is the target output. We assume a model defined up to a set of parameters, $y = g(x \, \vert \, \theta)$ where $g(\cdot)$ is the model and $\theta$ are its parameters.
+\subsection{Classification}
+For a classification\index{supervised learning!classification} problem, the task of the classifier is to assign a class label to a given input.
+
+% TODO: Classification
+
+\subsection{Regression}
+Suppose we want to predict the salary of a Computer Science graduate role. Inputs are the students attributes - degree result, previous experience and other information - that we believe affects a graduate's worth. The output is the predicted salary. Such problems where the output is a continuous number is known as a \textbf{regression}\index{Supervised learning!regression} problem.\\
+
+\begin{figure}[h!]
+	\centering
+  	\includegraphics{Pictures/graph1.pdf}
+\end{figure}
+
+\noindent
+For our model, $y = g(x \, \vert \, \theta)$, $y$ is a number since this is a regression model. In the simple example above, the model optimises the parameters, $\theta$, such that the approximation error is minimised. For out example, the model is linear with the form $y = wx+w_0$ where $w$ and $w_0$ are the parameters optimised for best fit to the training data.
+
+\section{Unsupervised learning}\index{unsupervised learning}
+Unlike in supervised learning, we do not have a supervisor and we only have input data. The task in \textbf{unsupervised learning} is to form a natural understanding of the hidden structure of unlabelled data. There is a structure to the input space such that certain patterns occur more often than others, and we want to see what generally happens and what does not.
+
+
+
+\section{Reinforcement learning}\index{reinforcement learning}
+% TODO: Reinforcement learning
+
+%----------------------------------------------------------------------------------------
+%	k-Nearest Neighbour
+%----------------------------------------------------------------------------------------
+
+\chapterimage{chapter_head_2.pdf} % Chapter heading image
+
+\chapter{k-nearest Neighbour}\index{k-nearest Neighbour}
+The \textbf{k-nearest Neighbour} estimation is one of the simplest machine learning algorithms, it is a \textbf{non-parametric method} (no parameter needs to be optimised) and requires \textbf{no explicit training}.
+
+\section{k-nearest Neighbour Classification}\index{k-nearest Neighbour!classification}
+The \textit{k}-nearest neighbour classifier assigns an instance to the class most heavily represented among its \textit{k} neighbours. It is based on the idea that the more similar the instances, the more likely it is that they belong to the same class. We measure how similar two data points are by using a reasonable similarity or distance measure.\\
+
+% TODO: k-nearest neighbour algorithm
+
+\begin{definition}[Euclidean Distance]
+Given two $d$-dimensional data points, $\mathbf{p}$ and $\mathbf{q}$, where $\mathbf{p}= \big[p_1, p_2, \cdots, p_d\big]$ and $\mathbf{q} = \big[q_1, q_2, \cdots, q_d\big]$, we define the \textbf{Euclidean distance}\index{similarity / distance measures!Euclidean distance} $d(\mathbf{p},\mathbf{q})$ as:
+\begin{equation*}
+	d(\mathbf{p},\mathbf{q}) \, = \, \sqrt{(p_1 - q_1)^2 + (p_2 - q_2)^2 + \cdots + (p_d - q_d)^2} \, = \, \sqrt{\sum^d_{i=1}(p_i - q_i)^2}
+\end{equation*}
+In this case, the \textit{k}-nearest neighbours are the training points with the lowest Euclidean distances to the testing point.
+\end{definition}
+
+\begin{definition}[Inner Product]
+Given two $d$-dimensional data points, $\mathbf{p}$ and $\mathbf{q}$, where $\mathbf{p}= \big[p_1, p_2, \cdots, p_d\big]$ and $\mathbf{q} = \big[q_1, q_2, \cdots, q_d\big]$, we define the \textbf{inner product}\index{similarity / distance measures!inner product} as:
+\begin{equation*}
+	s_{inner}(\mathbf{p},\mathbf{q}) \, = \, \sum^d_{i=1}p_iq_i
+\end{equation*}
+Since the inner product is a similarity measure, the \textit{k}-nearest neighbours are the training points possessing the highest similarity values to the testing point.
+\end{definition}
+
+\section{k-Nearest Neighbour Regression}\index{k-nearest Neighbour!regression}
+
+% TODO: k-nearest regression
+
+%----------------------------------------------------------------------------------------
+%	Linear Classification and Regression
+%----------------------------------------------------------------------------------------
+
+\chapterimage{chapter_head_2.pdf} % Chapter heading image
+
+\chapter{Linear Classification and Regression}
+
+%----------------------------------------------------------------------------------------
+%	Logistic Regression
+%----------------------------------------------------------------------------------------
+
+\chapterimage{chapter_head_2.pdf} % Chapter heading image
+
+\chapter{Logistic Regression}
+
+%----------------------------------------------------------------------------------------
+%	Support Vector Machine
+%----------------------------------------------------------------------------------------
+
+\chapterimage{chapter_head_2.pdf} % Chapter heading image
+
+\chapter{Support Vector Machine}
+
+\section{Model Validation}\index{model validation}
+\subsection{Holdout method}\index{model validation!holdout method}
+With the \textbf{holdout method}, the whole dataset is split into two groups, a training set and a testing set. The model is trained using the training set and asked to predict output values for the data in the testing set, which it has never seen before. This evaluation can have a high variance as we may get an unfortunate split as it may depend heavily on which data points end up in the training set and which end up in the testing set. Another drawback is that we may only have a small dataset, so we may not afford to set aside a portion of the dataset for testing.
+
+\subsection{Random subsampling}
+% TODO: Random Subsampling
+
+\subsection{k-fold cross validation}\index{model validation!k-fold cross validation}
+\textbf{k-fold cross validation} is one way to improve over the holdout method, the dataset is divided into $k$ partitions and the holdout method is performed $k$ times. Each time, one of the $k$ subsets is used as the testing set and the remaining $k - 1$ subsets are combined and used as the training set. We evaluate the error estimate as the average error across the $k$ trials. The advantage of this method is that it matters less how the dataset gets divided and all the examples in the dataset are eventually used for both training and testing, therefore the variance of the resulting estimate is reduced as $k$ is increased. However, the training has to be done $k$ times, which means this method gets expensive to compute as $k$ is increased.
+
+\subsection{Leave-one-out cross validation}\index{model validation!LOO cross validation}
+\textbf{Leave-one-out cross validation} is the degenerate case for $k$-fold cross validation, with $k$ = $N$, the number of data points in the dataset. As before, the average error is computed and used to evaluate the model. The evaluation given by leave-one-out cross validation error is good, but it is very expensive to compute compared to other methods.
+
+\subsection{Bootstrap}
+% TODO: Bootstrap
+
+\section{Confusion matrix}\index{confusion matrix}
+A confusion matrix is a table with two rows and two columns which allows further analysis rather than just the proportion of correct classifications. For example, if we had a dataset containing 98 examples from Class 1 and 2 examples from Class 2, there may be a classifier which classifies all the observations as Class 1, which yields a overall accuracy of 98\%. However, accuracy is not a reliable metric for this classifier as the classifier would have 100\% recognition rate for Class 1 but 0\% recognition rate for Class 2.\\
+
+\begin{definition}[True Positives (TP)]\index{confusion matrix!true positive}
+Both the predicted class and actual class is 'Yes'.
+\end{definition}
+\begin{definition}[True Negatives (TN)]\index{confusion matrix!true negative}
+Both the predicted class and actual class is 'No'.
+\end{definition}
+\begin{definition}[False Positives (FP)]\index{confusion matrix!false positive}
+The predicted class is 'Yes' and actual class is 'No'.
+\end{definition}
+\begin{definition}[False Negatives (FN)]\index{confusion matrix!false negative}
+The predicted class is 'No' and actual class is 'Yes'.
+\end{definition}
+
+\subsection*{Worked Example}
+Suppose that we predicted the presence of a disease that a patient and obtain the results below.
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|cc}
+\multicolumn{2}{c|}{\multirow{2}{*}{n = 165}} & \multicolumn{2}{c}{Predicted Class} \\ \cline{3-4} 
+\multicolumn{2}{c|}{} & No & Yes \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Actual\\ Class\end{tabular}} & No & 50 & 10 \\
+ & Yes & 5 & 100
+\end{tabular}
+\end{table}
+
+\begin{example}
+	For the above example, \textbf{TP} = 100, \textbf{TN} = 50, \textbf{FP} = 10 and \textbf{FN} = 5.
+\end{example}
+
+\noindent
+Some questions we may want to ask about our predictions are:
+\begin{enumerate}
+	\item When the patient actually has the disease, how often did we predict this?
+	\item When the patient does not have the disease, how often did we predict this?
+	\item When we predict that a patient has a disease, how often are we correct?
+\end{enumerate}
+
+\noindent
+\\First, we define some terms which directly relate to the questions above.\\
+
+\begin{definition}[Sensitivity / Recall]\index{confusion matrix!sensitivity}\index{confusion matrix!recall}
+The proportion of positives that are correctly classified.
+\begin{equation*}
+	\frac{\text{True Positives}}{\text{Number of Actual Positives}} = \frac{\text{TP}}{\text{TP+FN}}
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Specificity]\index{confusion matrix!specificity}
+The proportion of negatives that are correctly classified.
+\begin{equation*}
+	\frac{\text{True Negatives}}{\text{Number of Actual Negatives}} = \frac{\text{TN}}{\text{TN+FP}}
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Precision]\index{confusion matrix!precision}
+The proportion of predicted positives which were positive.
+\begin{equation*}
+	\frac{\text{True Positives}}{\text{Number of Predicted Positives}} = \frac{\text{TP}}{\text{TP+FP}}
+\end{equation*}
+\end{definition}
+
+\begin{example}
+	By definition, the answers to the above questions are sensitivity, specificity and precision respectively.
+\end{example}
+
+\begin{exercise}
+Calculate the sensitivity, specificity and precision for the confusion matrix given above.
+\end{exercise}
+
+%----------------------------------------------------------------------------------------
+%	Deep Learning Models
+%----------------------------------------------------------------------------------------
+
+\chapterimage{chapter_head_2.pdf} % Chapter heading image
+
+\chapter{Deep Learning Models}
+
+%----------------------------------------------------------------------------------------
+%	PART 2
+%----------------------------------------------------------------------------------------
+
+\part{Section I}
+
+%----------------------------------------------------------------------------------------
+%	Generative Models and Naive Bayes
+%----------------------------------------------------------------------------------------
+
+\chapterimage{chapter_head_2.pdf} % Chapter heading image
+
+\chapter{Generative Models and Naive Bayes}
+
+%----------------------------------------------------------------------------------------
+%	Clustering Analysis Basics
+%----------------------------------------------------------------------------------------
+
+\chapterimage{chapter_head_2.pdf} % Chapter heading image
+
+\chapter{Clustering Analysis Basics}
+
+\section{Introduction}
+Clustering analysis is the process of finding similarities between data according to the characteristics underlying he data and grouping similar data objects into clusters. A \textbf{cluster}\index{cluster} is a group of data points which are similar to one another within the same group and dissimilar to the points in other groups. Clustering analysis is \textbf{unsupervised} as there are no predefined classes for a training data set. Typically, clustering analysis is either used as a stand-alone tool to gain an insight into data distribution or used as a preprocessing step of other algorithms in intelligent systems.\\
+
+\noindent
+The two general tasks of clustering analysis are:
+\begin{enumerate}
+	\item Identifying the "natural" number of clusters present in a data set
+	\item Properly grouping data points into "sensible" clusters
+\end{enumerate}
+
+\subsection*{Real Life Applications}
+\begin{itemize}
+	\item \textbf{Marketing} - companies can discover distinct groups in their customer bases and then use this knowledge to develop targeted marketing programs
+	\item \textbf{Social network mining} - discovering communities of similar interests in a large group of people
+	\item \textbf{Image segmentation} - dividing an image into distinct regions for object recognition
+\end{itemize}
+
+\section{Data Representation}\index{data representation}
+\begin{multicols}{2}
+\noindent
+A data matrix is a $n \times p$ matrix which represents $n$ data points with $p$ dimensions. The data matrix has $two$ modes as rows and columns represent different entities.
+\columnbreak
+\begin{equation*}
+	\begin{bmatrix}
+		x_{11} & x_{12} & \cdots & x_{1p} \\
+		x_{21} & x_{22} & \cdots & x_{2p} \\
+		\vdots & \vdots & \vdots & \vdots \\
+		x_{n1} & x_{n2} & \cdots & x_{np} \\
+	\end{bmatrix}
+\end{equation*}
+\end{multicols}
+
+\begin{multicols}{2}
+\noindent
+A distance / dissimilarity matrix is a $n \times n$ matrix which represents the distance between each data point. The distance matrix is a symmetric triangular matrix as $\mathbf{d}(x, y) = \mathbf{d}(y, x)$ where $x, y$ are two data points. The distance matrix has $one$ mode as the rows and column represent the distance for the same entity.
+\columnbreak
+\begin{equation*}
+	\begin{bmatrix}
+		0 & & & & \\
+		d(x_2, x_1) & 0 & & & \\
+		d(x_3, x_1) & d(x_3, x_2) & 0 & & \\
+		\vdots & \vdots & \vdots & \ddots & \\
+		d(x_n, x_1) & d(x_n, x_2) & d(x_n, x_3) & \cdots & 0\\
+	\end{bmatrix}
+\end{equation*}
+\end{multicols}
+
+\section{Distance Measures}\index{distance measures}
+The \textbf{Minkowski distance} is a metric in a normed vector space which can be considered as the generalisation of both the Euclidean distance and the Manhattan distance. \\
+
+\begin{definition}[Minkowski Distance]\index{distance measures!Minkowski distance}
+The Minkowski distance of order $p$ between two points $\mathbf{x} = (x_1, x_2, \cdots, x_n)$ and $\mathbf{y} = (y_1, y_2, \cdots, y_n)$ is defined as:
+\begin{equation*}
+	d(\mathbf{p},\mathbf{q}) \, = \, \Bigg(\vert x_1 - y_1 \vert^p + \vert x_2 - y_2 \vert^p + \cdots + \vert x_n - y_n \vert^p \Bigg)^{\frac{1}{p}}, p > 0
+\end{equation*}
+\end{definition}
+
+\noindent
+The value of $p$ in the Minkowski Distance would be selected depending on the application. The \textbf{Manhattan} and \textbf{Euclidean} distances are simply Minkowski distances of order 1 and 2 respectively.\\
+
+\begin{definition}[Manhattan Distance]\index{distance measures!Manhattan distance}
+\begin{equation*}
+	d(\mathbf{p},\mathbf{q}) \, = \, \vert x_1 - y_1 \vert + \vert x_2 - y_2 \vert + \cdots + \vert x_n - y_n \vert
+\end{equation*}
+This is also known as the city block distance, the reason becomes clear in the examples below.
+\end{definition}
+
+\begin{definition}[Euclidean Distance]\index{distance measures!Euclidean distance}
+\begin{equation*}
+	d(\mathbf{p},\mathbf{q}) \, = \, \sqrt{\vert x_1 - y_1 \vert^2 + \vert x_2 - y_2 \vert^2 + \cdots + \vert x_n - y_n \vert^2}
+\end{equation*}
+This is the distance that you are already familiar with, in $n$ dimensions.
+\end{definition}
+
+\begin{exercise}
+When is the Manhattan distance between $x$ and $y$ equal to the Euclidean distance between $x$ and $y$, where $x$ and $y$ are data points of two dimensions?
+\end{exercise}
+
+\begin{definition}[Cosine measure]\index{distance measures!Cosine measure}
+For $\mathbf{x} = (x_1, x_2, \cdots, x_n)$ and $\mathbf{y} = (y_1, y_2, \cdots, y_n)$
+\begin{equation*}
+	\cos(\mathbf{x}, \mathbf{y}) = \frac{x_1y_1 + \cdots + x_ny_n}{\sqrt{x_1^2 + \cdots + x_n^2} \; \sqrt{y_1^2 + \cdots + y_n^2}} \quad \text{and} \quad d(\mathbf{x}, \mathbf{y}) = 1 - \cos(\mathbf{x}, \mathbf{y})
+\end{equation*}
+Note that $-1 \leq \cos(\mathbf{x}, \mathbf{y}) \leq 1$ and $0 \leq d(\mathbf{x}, \mathbf{y}) \leq 2$
+\end{definition}
+
+\newpage
+
+\subsection*{Worked Example}
+Suppose we have some documents that we want to compare to see how similar texts are, without taking into account the order of the words. For this example, we will consider:\\
+
+\begin{enumerate}[label=(\alph*)]
+	\item Labeeba loves me more than Hani loves me
+	\item Hani loves Labeeba more than Labeeba loves Hani
+	\item Labeeba likes Hani more than Hani likes Labeeba
+\end{enumerate}
+
+\ \\ \noindent
+First, we make a list of all the words that appear across all texts.
+\begin{center}
+	[Hani, Labeeba, likes, loves, me, more, than]
+\end{center}
+
+\noindent
+Next, we construct a vector for each document, with the frequency of each word.
+\begin{center}
+	\textbf{a} = [1, 1, 0, 2, 2, 1, 1]\\
+	\textbf{b} = [2, 2, 0, 2, 0, 1, 1]\\
+	\textbf{c} = [2, 2, 2, 0, 0, 1, 1]\\
+\end{center}
+
+\noindent
+Now we can compute the \textbf{cosine measures}: cos(\textbf{a}, \textbf{b}), cos(\textbf{a}, \textbf{c}) and cos(\textbf{b}, \textbf{c}).
+
+\begin{equation*}
+	\cos(\mathbf{a}, \mathbf{b}) = \frac{(1)(1) + (1)(2) + (0)(0) + (2)(2) + (2)(0) + (1)(1) + (1)(1)}{\sqrt{1^2 + 1^2 + 0^2 + 2^2 + 2^2 + 1^2 + 1^2} \, \sqrt{2^2 + 2^2 + 0^2 + 2^2 + 0^2 + 1^2 + 1^2}} \approx 0.694
+\end{equation*}
+
+\noindent
+By similar calculations, we find that $\cos(\mathbf{a}, \mathbf{c}) \approx 0.463$ and $\cos(\mathbf{b}, \mathbf{c}) \approx 0.714$. This tells us that sentences \textbf{b} and \textbf{c} are the most similar pair out the above texts, as they have the highest cosine measure. This is also the reason $d(\mathbf{x}, \mathbf{y})$ is defined as $1 - \cos(\mathbf{x}, \mathbf{y})$ since a larger cosine measure would be converted into a smaller distance.
+%----------------------------------------------------------------------------------------
+%	k-means Clustering
+%----------------------------------------------------------------------------------------
+
+\chapterimage{chapter_head_2.pdf} % Chapter heading image
+
+\chapter{k-means Clustering}
+
+\section{Partitioning clustering approach}\index{partitioning clustering}
+A partitioning clustering approach is done by iteratively partitioning the training data set to learn a partition of the given data space to product several non-empty clusters, where the number of clusters is usually given in advance. In principle, an optimal partition is achieved by minimising the sum of the squared distance to its "representative object" in each cluster.
+
+\begin{exercise}
+Why do we have to used the squared distance?
+\end{exercise}
+
+\section{Introduction}
+The k-means algorithm is the simplest partitioning method for clustering analysis and is widely used in data mining algorithms. It is a \textbf{heuristic method} and is based on each clustering being represented by the centre of the cluster and the algorithm will converge to stable centroids\index{centroid} of clusters. The goal of this algorithm is find a partition of $k$ clusters to optimise the chosen partition criterion - the global optimum is achieved by exhaustively searching all partitions.
+
+\section{k-means algorithm}
+Before we can use the k-means algorithm, we must decide the cluster number \textit{k} and an appropriate distance measure that will be used. We initialise the algorithm by selecting \textit{k} distinct seed points, randomly.\\
+
+\begin{enumerate}
+	\item assign each object to the cluster of the nearest point
+	\item compute new seed points as the centroids of the clusters of the current partition
+\end{enumerate}
+
+\ \\ \noindent
+The two steps are repeated until it converges (membership in each cluster no longer changes). At this point, we have \textit{k} centroids which partition the whole data space into \textit{k} mutually exclusive subspaces to form a partition.\\
+
+\begin{figure}[h]
+	\centering
+  	\includegraphics[width=50mm, scale=0.7]{Pictures/voronoi}
+  	\caption{Voronoi Diagram}
+\end{figure}
+
+\noindent
+The figure above shows how a data space can be partitioned, where each black dot represents a centroid of a cluster. Notice that the distance used above is Euclidean distance.
+
+\section{Issues}
+
+\begin{itemize}
+	\item This algorithm has computational complexity of \textit{O}(tKn), where \textit{n} is the number of data points, \textit{K} is the number of clusters and \textit{t} is the number of iterations. Normally, \textit{K}, \textit{t} << \textit{n}.
+	\item It is sensitive to initialisation, which may result to unwanted solutions
+	\item Is unable to handle noisy data and outliers, which results in an inaccurate partition
+	\item Requires prior knowledge of the cluster number
+	\item Incapable of handling clusters of non-convex shape
+	\item Inapplicable to categorical data, since the mean is not defined
+	\item How do we evaluate the k-mean performance? 
+\end{itemize}
+
+\subsection*{Example}
+The k-Means algorithm is very simple, so an example has be omitted. An example may be added in the future, if I have spare time - but for now, just check the lecture slides.
+
+%----------------------------------------------------------------------------------------
+%	Hierarchical and Ensemble Clustering
+%----------------------------------------------------------------------------------------
+
+\chapterimage{chapter_head_2.pdf} % Chapter heading image
+
+\chapter{Hierarchical and Ensemble Clustering}
+
+\section{Hierarchical clustering approach}
+Hierarchical clustering approach\index{hierarchical clustering} is done by sequentially partitioning the data set to construct nested partitions layer by layer, via grouping objects into a tree of clusters. We use a generalised distance matrix as the clustering criteria and we do not need to know the number of clusters in advance.
+
+\subsection*{Approaches to hierarchical clustering}\index{hierarchical clustering!approaches}
+There are two main approaches to hierarchical clustering: \textbf{agglomerative clustering}\index{agglomerative clustering} (bottom-up) and \textbf{divisive clustering}\index{divisive clustering} (top-down). 
+
+%----------------------------------------------------------------------------------------
+%	Cluster Validation
+%----------------------------------------------------------------------------------------
+
+\chapterimage{chapter_head_2.pdf} % Chapter heading image
+
+\chapter{Cluster Validation}
+
+%----------------------------------------------------------------------------------------
+%	INDEX
+%----------------------------------------------------------------------------------------
+
+\cleardoublepage
+\phantomsection
+\setlength{\columnsep}{0.75cm}
+\addcontentsline{toc}{chapter}{\textcolor{ocre}{Index}}
+\printindex
+
+%----------------------------------------------------------------------------------------
+
+\end{document}

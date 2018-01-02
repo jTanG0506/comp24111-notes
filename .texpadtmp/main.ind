@@ -1,0 +1,69 @@
+\begin{theindex}
+
+  \item agglomerative clustering, \hyperpage{31}
+
+  \indexspace
+
+  \item centroid, \hyperpage{29}
+  \item cluster, \hyperpage{25}
+  \item confusion matrix, \hyperpage{16}
+    \subitem false negative, \hyperpage{16}
+    \subitem false positive, \hyperpage{16}
+    \subitem precision, \hyperpage{16}
+    \subitem recall, \hyperpage{16}
+    \subitem sensitivity, \hyperpage{16}
+    \subitem specificity, \hyperpage{16}
+    \subitem true negative, \hyperpage{16}
+    \subitem true positive, \hyperpage{16}
+
+  \indexspace
+
+  \item data representation, \hyperpage{25}
+  \item distance measures, \hyperpage{26}
+    \subitem Cosine measure, \hyperpage{26}
+    \subitem Euclidean distance, \hyperpage{26}
+    \subitem Manhattan distance, \hyperpage{26}
+    \subitem Minkowski distance, \hyperpage{26}
+  \item divisive clustering, \hyperpage{31}
+
+  \indexspace
+
+  \item hierarchical clustering, \hyperpage{31}
+    \subitem approaches, \hyperpage{31}
+
+  \indexspace
+
+  \item k-nearest Neighbour, \hyperpage{9}
+    \subitem classification, \hyperpage{9}
+    \subitem regression, \hyperpage{10}
+
+  \indexspace
+
+  \item model validation, \hyperpage{15}
+    \subitem holdout method, \hyperpage{15}
+    \subitem k-fold cross validation, \hyperpage{15}
+    \subitem LOO cross validation, \hyperpage{15}
+
+  \indexspace
+
+  \item partitioning clustering, \hyperpage{29}
+
+  \indexspace
+
+  \item reinforcement learning, \hyperpage{8}
+
+  \indexspace
+
+  \item similarity / distance measures
+    \subitem Euclidean distance, \hyperpage{9}
+    \subitem inner product, \hyperpage{9}
+  \item Supervised learning
+    \subitem regression, \hyperpage{7}
+  \item supervised learning, \hyperpage{7}
+    \subitem classification, \hyperpage{7}
+
+  \indexspace
+
+  \item unsupervised learning, \hyperpage{7}
+
+\end{theindex}

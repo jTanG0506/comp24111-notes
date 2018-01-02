@@ -1,0 +1,36 @@
+\indexentry{supervised learning|hyperpage}{7}
+\indexentry{supervised learning!classification|hyperpage}{7}
+\indexentry{Supervised learning!regression|hyperpage}{7}
+\indexentry{unsupervised learning|hyperpage}{7}
+\indexentry{reinforcement learning|hyperpage}{8}
+\indexentry{k-nearest Neighbour|hyperpage}{9}
+\indexentry{k-nearest Neighbour!classification|hyperpage}{9}
+\indexentry{similarity / distance measures!Euclidean distance|hyperpage}{9}
+\indexentry{similarity / distance measures!inner product|hyperpage}{9}
+\indexentry{k-nearest Neighbour!regression|hyperpage}{10}
+\indexentry{model validation|hyperpage}{15}
+\indexentry{model validation!holdout method|hyperpage}{15}
+\indexentry{model validation!k-fold cross validation|hyperpage}{15}
+\indexentry{model validation!LOO cross validation|hyperpage}{15}
+\indexentry{confusion matrix|hyperpage}{16}
+\indexentry{confusion matrix!true positive|hyperpage}{16}
+\indexentry{confusion matrix!true negative|hyperpage}{16}
+\indexentry{confusion matrix!false positive|hyperpage}{16}
+\indexentry{confusion matrix!false negative|hyperpage}{16}
+\indexentry{confusion matrix!sensitivity|hyperpage}{16}
+\indexentry{confusion matrix!recall|hyperpage}{16}
+\indexentry{confusion matrix!specificity|hyperpage}{16}
+\indexentry{confusion matrix!precision|hyperpage}{16}
+\indexentry{cluster|hyperpage}{25}
+\indexentry{data representation|hyperpage}{25}
+\indexentry{distance measures|hyperpage}{26}
+\indexentry{distance measures!Minkowski distance|hyperpage}{26}
+\indexentry{distance measures!Manhattan distance|hyperpage}{26}
+\indexentry{distance measures!Euclidean distance|hyperpage}{26}
+\indexentry{distance measures!Cosine measure|hyperpage}{26}
+\indexentry{partitioning clustering|hyperpage}{29}
+\indexentry{centroid|hyperpage}{29}
+\indexentry{hierarchical clustering|hyperpage}{31}
+\indexentry{hierarchical clustering!approaches|hyperpage}{31}
+\indexentry{agglomerative clustering|hyperpage}{31}
+\indexentry{divisive clustering|hyperpage}{31}
