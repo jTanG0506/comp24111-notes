@@ -300,7 +300,7 @@ Calculate the sensitivity, specificity and precision for the confusion matrix gi
 \chapter{Clustering Analysis Basics}
 
 \section{Introduction}
-Clustering analysis is the process of finding similarities between data according to the characteristics underlying he data and grouping similar data objects into clusters. A \textbf{cluster}\index{cluster} is a group of data points which are similar to one another within the same group and dissimilar to the points in other groups. Clustering analysis is \textbf{unsupervised} as there are no predefined classes for a training data set. Typically, clustering analysis is either used as a stand-alone tool to gain an insight into data distribution or used as a preprocessing step of other algorithms in intelligent systems.\\
+Clustering analysis is the process of finding similarities between data according to the characteristics underlying he data and grouping similar data objects into clusters. A \textbf{cluster}\index{cluster} is a group of data points which are similar to one another within the same group and dissimilar to the points in other groups. Clustering analysis is \textbf{unsupervised} as there are no predefined classes for a training data set. The main approach of clustering analysis is to maximise the intra-cluster similarity and minimise the inter-cluster similarity. Typically, clustering analysis is either used as a stand-alone tool to gain an insight into data distribution or used as a preprocessing step of other algorithms in intelligent systems.\\
 
 \noindent
 The two general tasks of clustering analysis are:
@@ -419,6 +419,79 @@ Now we can compute the \textbf{cosine measures}: cos(\textbf{a}, \textbf{b}), co
 
 \noindent
 By similar calculations, we find that $\cos(\mathbf{a}, \mathbf{c}) \approx 0.463$ and $\cos(\mathbf{b}, \mathbf{c}) \approx 0.714$. This tells us that sentences \textbf{b} and \textbf{c} are the most similar pair out the above texts, as they have the highest cosine measure. This is also the reason $d(\mathbf{x}, \mathbf{y})$ is defined as $1 - \cos(\mathbf{x}, \mathbf{y})$ since a larger cosine measure would be converted into a smaller distance.
+
+\section{Distance for binary features}\index{binary features!distance}
+For binary features, their values can be converted to 1 or 0, then we calculate the contingency table.\index{binary features!contingency table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{cccc}
+\multicolumn{2}{c}{\multirow{2}{*}{}}       & \multicolumn{2}{c}{y} \\
+\multicolumn{2}{c}{}                        & 1         & 0         \\ \cline{2-4} 
+\multirow{2}{*}{x} & \multicolumn{1}{c|}{1} & a         & b         \\
+                   & \multicolumn{1}{c|}{0} & c         & d        
+\end{tabular}
+\end{table}
+
+\subsection*{Symmetric binary features}\index{binary features!symmetric}
+Binary features are \textbf{symmetric} if both of their states equally valuable and carry the same weight; i.e. nopreference on which outcome should be coded as 1 or 0 , e.g. gender.
+
+\begin{center}
+	$$d(\mathbf{x}, \mathbf{y}) = \frac{b + c}{a + b + c + d}$$
+\end{center}
+
+
+\subsection*{Asymmetric binary features}\index{binary features!asymmetric}
+Binary features are \textbf{asymmetric} if the outcomes of the states not equally important, e.g. the positive and negativeoutcomes of a disease test; the rarest one is set to 1 and the other is 0. Since the number of negative matches are considered unimportant, they are omitted from the calculations.
+
+\begin{center}
+	$$d(\mathbf{x}, \mathbf{y}) = \frac{b + c}{a + b + c}$$
+\end{center}
+
+\section{Distance for nominal features}\index{nominal features!distance}
+Nominal features are those that can take more than two states, for example {\textit{small, medium, large}}. There are two methods to handle variables with nominal features; simple mis-matching and converting them into binary variables.
+
+\subsection*{Simple mis-matching}\index{nominal features!simple mismatching}
+$$d(\mathbf{x}, \mathbf{y}) = \frac{\text{number of mis-matching features between \textbf{x} and \textbf{y}}}{\text{total number of features}}$$
+
+\subsection*{Converting them into binary variables}\index{nominal features!converting into binary}
+We create new binary features for all of its nominal states, for example if our size feature takes three possible nominal states \textit{{small, medium, large}} then this feature will be expanded into three binary features. \textit{{small, medium, large}} = {100, 010, 001}, then we can use the distance measures for binary features.
+
+\subsection*{Worked Example}
+Consider the example below where we have two toys, $T_1$ and $T_2$, whose features are size, colour and price range.
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c|c|}
+\cline{2-4}
+                         & Size & Colour & Price Range \\ \hline
+\multicolumn{1}{|c|}{$T_1$} & 010  & 100    & 01       \\ \hline
+\multicolumn{1}{|c|}{$T_2$} & 100  & 001    & 01      \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection*{Simple mis-matching}
+Only the price range takes the same value for the features between $T_1$ and $T_2$ hence
+$$d(\mathbf{T_1}, \mathbf{T_2}) = \frac{2}{3} \approx 0.66$$
+
+\subsubsection*{Converting them into binary values}
+Size: [Small, Medium, Large] = [100, 010, 000]\\
+Colour: [Green, Red, Yellow] = [100, 010, 000]\\
+Price: [Cheap, Expensive] = [10, 01]\\
+
+\noindent
+Now we do $T_1$ \textbf{XOR} $T_2$ = 01010001 \textbf{XOR} 10000101 = 11010100. Now from here we can get the distance by dividing the number of 1 bits in $T_1$ \textbf{XOR} $T_2$ by the total number of bits in $T_1$.
+$$d(\mathbf{T_1}, \mathbf{T_2}) = \frac{4}{8} = 0.5$$
+
+\section{Clustering methodologies}\index{clustering methodologies}
+\begin{itemize}
+	\item \textbf{Partitioning}: construct various partitions and then evaluate them by some criterion, e.g. minimising the sum of squares distance cost
+	\item \textbf{Hierarchical}: create a hierarchical decomposition of the set of data using some criterion
+	\item \textbf{Density-based}: based on connectivity and density functions
+	\item Model-based: a generative model is hypothesised for each of the clusters and tries to find the best fir of that model to each other
+	\item \textbf{Spectral clustering}: convert data set into a weighted graph then cut the graphs into sub-graphs corresponding to clusters via spectral analysis
+	\item \textbf{Clustering ensemble}: combine multiple clustering results
+\end{itemize}
+
 %----------------------------------------------------------------------------------------
 %	k-means Clustering
 %----------------------------------------------------------------------------------------
