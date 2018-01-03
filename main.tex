@@ -34,6 +34,7 @@
 \usepackage{multirow}
 \usepackage{multicol}
 \usepackage{parcolumns}
+\usepackage{listings}
 
 %----------------------------------------------------------------------------------------
 
@@ -118,8 +119,6 @@ For our model, $y = g(x \, \vert \, \theta)$, $y$ is a number since this is a re
 \section{Unsupervised learning}\index{unsupervised learning}
 Unlike in supervised learning, we do not have a supervisor and we only have input data. The task in \textbf{unsupervised learning} is to form a natural understanding of the hidden structure of unlabelled data. There is a structure to the input space such that certain patterns occur more often than others, and we want to see what generally happens and what does not.
 
-
-
 \section{Reinforcement learning}\index{reinforcement learning}
 % TODO: Reinforcement learning
 
@@ -133,9 +132,25 @@ Unlike in supervised learning, we do not have a supervisor and we only have inpu
 The \textbf{k-nearest Neighbour} estimation is one of the simplest machine learning algorithms, it is a \textbf{non-parametric method} (no parameter needs to be optimised) and requires \textbf{no explicit training}.
 
 \section{k-nearest Neighbour Classification}\index{k-nearest Neighbour!classification}
-The \textit{k}-nearest neighbour classifier assigns an instance to the class most heavily represented among its \textit{k} neighbours. It is based on the idea that the more similar the instances, the more likely it is that they belong to the same class. We measure how similar two data points are by using a reasonable similarity or distance measure.\\
+The \textit{k}-nearest neighbour classifier assigns an instance to the class most heavily represented among its \textit{k} neighbours. It is based on the idea that the more similar the instances, the more likely it is that they belong to the same class. We measure how similar two data points are by using a reasonable similarity or distance measure.
 
-% TODO: k-nearest neighbour algorithm
+\subsection{k-NN classification rule}
+\begin{lstlisting}[mathescape]
+let $x_{te}$ be the testing point
+for each training data point $x_{tr}$
+    measure distance($x_{te}$, $x_{tr}$)
+end
+sort distances
+select $k$ nearest points
+assign most common class to $x_{te}$	
+\end{lstlisting}
+
+\noindent
+In order to measure the distance $d(x_{te}, x_{tr})$ mentioned in the algorithm, we need to first decide on a distance measure. Euclidean distance and inner product are two measures we can used, that are defined below. An additional distance measure that we can use is cosine similarity, which is described in a later chapter.\\
+
+\begin{exercise}
+The hyper-parameter $k$ should be odd and co-prime to the number of classes in the data set, why?
+\end{exercise}
 
 \begin{definition}[Euclidean Distance]
 Given two $d$-dimensional data points, $\mathbf{p}$ and $\mathbf{q}$, where $\mathbf{p}= \big[p_1, p_2, \cdots, p_d\big]$ and $\mathbf{q} = \big[q_1, q_2, \cdots, q_d\big]$, we define the \textbf{Euclidean distance}\index{similarity / distance measures!Euclidean distance} $d(\mathbf{p},\mathbf{q})$ as:
@@ -154,8 +169,16 @@ Since the inner product is a similarity measure, the \textit{k}-nearest neighbou
 \end{definition}
 
 \section{k-Nearest Neighbour Regression}\index{k-nearest Neighbour!regression}
+For regression, we take a sample's $k$ nearest neighbours to estimate its target output, for example, through the weighted average of these neighbours target output. This is very similar to classification but you need to take into account the distance of this sample from its nearest neighbours.
 
-% TODO: k-nearest regression
+\subsection*{Worked Example}
+Since the $k$-NN classification algorithm is one of the simplest, you should be able to follow it from the lecture slides - hence a worked example has been omitted. It is also trivial to derive the algorithm for k-NN regression.
+
+\section{Neighbour number k}
+The neighbour number $k$ is called the \textbf{hyper-parameter}\index{hyper-parameter} and the processing of determining the best value of $k$ to use is called \textbf{hyper-parameter selection}\index{hyper-parameter selection} or model selection. If our choice of $k$ is too small, we may model noise and if our choice of $k$ is too large, neighbours will include too many samples from other classes.\\
+
+\noindent
+The number of training samples also plays a role, a small number of training samples will lead to insufficient information about the data set. However, a large number of training samples comes with a tradeoff in time and memory cost for calculating and sorting distances.
 
 %----------------------------------------------------------------------------------------
 %	Linear Classification and Regression
@@ -281,7 +304,7 @@ Calculate the sensitivity, specificity and precision for the confusion matrix gi
 %	PART 2
 %----------------------------------------------------------------------------------------
 
-\part{Section I}
+\part{Section II}
 
 %----------------------------------------------------------------------------------------
 %	Generative Models and Naive Bayes
@@ -299,7 +322,7 @@ Calculate the sensitivity, specificity and precision for the confusion matrix gi
 
 \chapter{Clustering Analysis Basics}
 
-\section{Introduction}
+\section*{Introduction}
 Clustering analysis is the process of finding similarities between data according to the characteristics underlying he data and grouping similar data objects into clusters. A \textbf{cluster}\index{cluster} is a group of data points which are similar to one another within the same group and dissimilar to the points in other groups. Clustering analysis is \textbf{unsupervised} as there are no predefined classes for a training data set. The main approach of clustering analysis is to maximise the intra-cluster similarity and minimise the inter-cluster similarity. Typically, clustering analysis is either used as a stand-alone tool to gain an insight into data distribution or used as a preprocessing step of other algorithms in intelligent systems.\\
 
 \noindent
@@ -500,15 +523,15 @@ $$d(\mathbf{T_1}, \mathbf{T_2}) = \frac{4}{8} = 0.5$$
 
 \chapter{k-means Clustering}
 
+\section*{Introduction}
+The k-means algorithm is the simplest partitioning method for clustering analysis and is widely used in data mining algorithms. It is a \textbf{heuristic method} and is based on each clustering being represented by the centre of the cluster and the algorithm will converge to stable centroids\index{centroid} of clusters. The goal of this algorithm is find a partition of $k$ clusters to optimise the chosen partition criterion - the global optimum is achieved by exhaustively searching all partitions.
+
 \section{Partitioning clustering approach}\index{partitioning clustering}
 A partitioning clustering approach is done by iteratively partitioning the training data set to learn a partition of the given data space to product several non-empty clusters, where the number of clusters is usually given in advance. In principle, an optimal partition is achieved by minimising the sum of the squared distance to its "representative object" in each cluster.
 
 \begin{exercise}
 Why do we have to used the squared distance?
 \end{exercise}
-
-\section{Introduction}
-The k-means algorithm is the simplest partitioning method for clustering analysis and is widely used in data mining algorithms. It is a \textbf{heuristic method} and is based on each clustering being represented by the centre of the cluster and the algorithm will converge to stable centroids\index{centroid} of clusters. The goal of this algorithm is find a partition of $k$ clusters to optimise the chosen partition criterion - the global optimum is achieved by exhaustively searching all partitions.
 
 \section{k-means algorithm}
 Before we can use the k-means algorithm, we must decide the cluster number \textit{k} and an appropriate distance measure that will be used. We initialise the algorithm by selecting \textit{k} distinct seed points, randomly.\\
