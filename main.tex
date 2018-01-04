@@ -1,24 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Compiling this template:
-% This template uses biber for its bibliography and makeindex for its index.
-% When you first open the template, compile it from the command line with the 
-% commands below to make sure your LaTeX distribution is configured correctly:
-%
-% 1) pdflatex main
-% 2) makeindex main.idx -s StyleInd.ist
-% 3) biber main
-% 4) pdflatex main x 2
-%
-% After this, when you wish to update the bibliography/index use the appropriate
-% command above and make sure to compile with pdflatex several times 
-% afterwards to propagate your changes to the document.
-%
-% This template also uses a number of packages which may need to be
-% updated to the newest versions for the template to compile. It is strongly
-% recommended you update your LaTeX distribution if you have any
-% compilation errors.
-%
 % Important note:
 % Chapter heading images should have a 2:1 width:height ratio,
 % e.g. 920px width and 460px height.
@@ -94,7 +75,7 @@
 %	Introduction to Machine Learning
 %----------------------------------------------------------------------------------------
 
-\chapterimage{chapter_head_2.pdf} % Chapter heading image
+\chapterimage{chapter_head_2.pdf}
 
 \chapter{Introduction to Machine Learning}
 
@@ -126,7 +107,7 @@ Unlike in supervised learning, we do not have a supervisor and we only have inpu
 %	k-Nearest Neighbour
 %----------------------------------------------------------------------------------------
 
-\chapterimage{chapter_head_2.pdf} % Chapter heading image
+\chapterimage{chapter_head_2.pdf}
 
 \chapter{k-nearest Neighbour}\index{k-nearest Neighbour}
 The \textbf{k-nearest Neighbour} estimation is one of the simplest machine learning algorithms, it is a \textbf{non-parametric method} (no parameter needs to be optimised) and requires \textbf{no explicit training}.
@@ -184,7 +165,7 @@ The number of training samples also plays a role, a small number of training sam
 %	Linear Classification and Regression
 %----------------------------------------------------------------------------------------
 
-\chapterimage{chapter_head_2.pdf} % Chapter heading image
+\chapterimage{chapter_head_2.pdf}
 
 \chapter{Linear Classification and Regression}
 
@@ -192,7 +173,7 @@ The number of training samples also plays a role, a small number of training sam
 %	Logistic Regression
 %----------------------------------------------------------------------------------------
 
-\chapterimage{chapter_head_2.pdf} % Chapter heading image
+\chapterimage{chapter_head_2.pdf}
 
 \chapter{Logistic Regression}
 
@@ -200,7 +181,7 @@ The number of training samples also plays a role, a small number of training sam
 %	Support Vector Machine
 %----------------------------------------------------------------------------------------
 
-\chapterimage{chapter_head_2.pdf} % Chapter heading image
+\chapterimage{chapter_head_2.pdf}
 
 \chapter{Support Vector Machine}
 
@@ -296,7 +277,7 @@ Calculate the sensitivity, specificity and precision for the confusion matrix gi
 %	Deep Learning Models
 %----------------------------------------------------------------------------------------
 
-\chapterimage{chapter_head_2.pdf} % Chapter heading image
+\chapterimage{chapter_head_2.pdf}
 
 \chapter{Deep Learning Models}
 
@@ -310,7 +291,7 @@ Calculate the sensitivity, specificity and precision for the confusion matrix gi
 %	Generative Models and Naive Bayes
 %----------------------------------------------------------------------------------------
 
-\chapterimage{chapter_head_2.pdf} % Chapter heading image
+\chapterimage{chapter_head_2.pdf}
 
 \chapter{Generative Models and Naive Bayes}
 
@@ -318,7 +299,7 @@ Calculate the sensitivity, specificity and precision for the confusion matrix gi
 %	Clustering Analysis Basics
 %----------------------------------------------------------------------------------------
 
-\chapterimage{chapter_head_2.pdf} % Chapter heading image
+\chapterimage{chapter_head_2.pdf}
 
 \chapter{Clustering Analysis Basics}
 
@@ -519,7 +500,7 @@ $$d(\mathbf{T_1}, \mathbf{T_2}) = \frac{4}{8} = 0.5$$
 %	k-means Clustering
 %----------------------------------------------------------------------------------------
 
-\chapterimage{chapter_head_2.pdf} % Chapter heading image
+\chapterimage{chapter_head_2.pdf}
 
 \chapter{k-means Clustering}
 
@@ -572,7 +553,7 @@ The k-Means algorithm is very simple, so an example has be omitted. An example m
 %	Hierarchical and Ensemble Clustering
 %----------------------------------------------------------------------------------------
 
-\chapterimage{chapter_head_2.pdf} % Chapter heading image
+\chapterimage{chapter_head_2.pdf}
 
 \chapter{Hierarchical and Ensemble Clustering}
 
@@ -586,9 +567,90 @@ There are two main approaches to hierarchical clustering: \textbf{agglomerative 
 %	Cluster Validation
 %----------------------------------------------------------------------------------------
 
-\chapterimage{chapter_head_2.pdf} % Chapter heading image
+\chapterimage{chapter_head_2.pdf}
 
 \chapter{Cluster Validation}
+\section*{Introduction}
+Cluster validation refers to the procedures that evaluate the results of clustering in a \textit{quantitive} and \textit{objective} fashion. In cluster validation, we need to compare clustering algorithms, solve the problem of determining the number of clusters, avoid finding patterns in noise and finding the "best" clusters from the data.\\
+
+\noindent
+We have two types of criteria, internal and external. An \textbf{internal criteria}\index{internal index} (index) is used to validate without external information and can be applied to find the "proper" number of clusters in a data set. An \textbf{external criteria}\index{external index} (index) may be applied to evaluate the performance of a clustering algorithm against data sets where the ground truth is available, by comparing how similar the partition generated by the clustering algorithm is to the ground truth.
+
+\section{Internal Index}
+The internal index we will focus on is the \textbf{F-ratio index}, which is a variance based internal index.
+
+\subsection*{Variance-based methods}
+In \textbf{variance-based methods}\index{variance-based methods}, the goal is to minimise the intra-cluster variance and to maximise the inter-cluster variance. Assume an algorithm leads to a partition of $K$ clusters where cluster $i$ has $n_i$ data points, $c_i$ is its centroid and $d(\cdot,\cdot)$ is a chosen distance measure.
+
+$$ \text{Intra-cluster variance = } SSW(K) = \sum^K_{i=1}\sum^{n_i}_{j=1}d^2(\mathbf{x}_{ij}, \mathbf{c}_i)$$
+$$ \text{Inter-cluster variance = } SSB(K) = \sum^K_{i=1}n_i \cdot d^2(\mathbf{c}_i, \mathbf{c})$$
+$$ \text{where \textbf{c} is the global centroid of the whole data set} $$
+
+\subsection{F-ratio index}
+The \textbf{F-ratio index}\index{F-ratio index} is a measure of the inter-cluster variance against the intra-cluster variance. We calculate the F-ratio index for a partition of $K$ clusters as follows.
+$$ F(K) = \frac{K \cdot SSW(K)}{SSB(K)} = \frac{K \cdot \sum^K_{i=1}\sum^{n_i}_{j=1}d^2(\mathbf{x}_{ij}, \mathbf{c}_i)}{\sum^K_{i=1}n_i \cdot d^2(\mathbf{c}_i, \mathbf{c})}$$
+
+\noindent
+It is ideal to have a low F-ratio index, so we run clustering algorithms for a range of values of $K$ (the number of clusters) and calculate a F-ratio index for each value of $K$ and each algorithm, then select the algorithm and value of $K$ which yields the lowest F-ratio index.
+
+\section{External Index}
+The external index we will focus on is the Rand Index, 1971.
+
+\subsection{Issues with external indexes}
+\begin{itemize}
+	\item \textbf{cluster-ID permutation}: the cluster IDs in a partition from clustering have been assigned arbitrarily due to unsupervised learning
+	\item \textbf{inconsistence in cluster numbers}: the number off clusters from algorithm may be different from the number of classes (in ground truth)
+	\item \textbf{point-pair correspondence}: how do we find all possible correspondences between the ground truth and a partition?
+\end{itemize}
+
+\subsection{Rand Index}
+The idea behind \textbf{Rand Index}\index{rand index} is to consider all pairs in the data set by looking into both \textit{agreement} and \textit{disagreement} against the ground truth.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c|}
+\cline{2-3}
+\textbf{X/Y} & \begin{tabular}[c]{@{}c@{}}Pairs in the\\ same class\end{tabular} & \begin{tabular}[c]{@{}c@{}}Pairs in\\ different classes\end{tabular} \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Pairs in the\\ same cluster\end{tabular}} & $a$ & $b$ \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Pairs in \\ different clusters\end{tabular}} & $c$ & $d$ \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{definition}[Rand Index]\index{rand index}
+Let \textbf{X} be the partition from clustering and \textbf{Y} be the ground truth. The Rand Index is defined as
+\begin{equation*}
+	\text{RI}(\mathbf{X},\mathbf{Y}) = \frac{a + d}{a + b + c + d}
+\end{equation*}
+\end{definition}
+
+\noindent
+To calculate $a, b, c, d$, we can use a contingency table as follows. $k$ denotes the number of clusters in \textbf{X}, $l$ denotes the number of classes in \textbf{Y} and each $n_{ij}$ denotes the number of points in both cluster $i$ and class $j$.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{llll|l}
+$n_{11}$ & $n_{12}$ & $\cdots$ & $n_{1l}$ & $n_{1.}$ \\
+$n_{21}$ & $n_{22}$ & $\cdots$ & $n_{2l}$ & $n_{2.}$ \\
+$\vdots$ & $\vdots$ & $\ddots$ & $\vdots$ & $\vdots$ \\
+$n_{k1}$ & $n_{k2}$ & $\cdots$ & $n_{kl}$ & $n_{k.}$ \\ \hline
+$n_{.1}$ & $n_{.2}$ & $\cdots$ & $n_{.l}$ & $N$
+\end{tabular}
+\end{table}
+
+\begin{exercise}
+It follows that $N = \binom{n}{2}$, where $n$ is the number of data points. Why is this?
+\end{exercise}
+
+\begin{multicols}{2}
+$$ a = \frac{1}{2}\sum^{k}_{i=1}\sum^{l}_{j=1}n_{ij}(n_{ij} - 1) $$
+$$ b = \frac{1}{2}(\sum^{l}_{j=1}n_{.j} - \sum^{k}_{i=1}\sum^{l}_{j=1}n_{ij}^2)$$
+
+$$ c = \frac{1}{2}(\sum^{k}_{i=1}n_{i.} - \sum^{k}_{i=1}\sum^{l}_{j=1}n_{ij}^2)$$
+$$ d = \frac{1}{2}(N^2 + \sum^{k}_{i=1}\sum^{l}_{j=1}n_{ij}^2 - (\sum^{k}_{i=1}n_{i.} + \sum^{l}_{j=1}n_{.j}))$$
+\end{multicols}
+
+\section{Weighted Clustering Ensemble}
+% TODO: Weighted Clustering Ensemble
 
 %----------------------------------------------------------------------------------------
 %	INDEX
