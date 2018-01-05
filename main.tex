@@ -561,7 +561,73 @@ The k-Means algorithm is very simple, so an example has be omitted. An example m
 Hierarchical clustering approach\index{hierarchical clustering} is done by sequentially partitioning the data set to construct nested partitions layer by layer, via grouping objects into a tree of clusters. We use a generalised distance matrix as the clustering criteria and we do not need to know the number of clusters in advance.
 
 \subsection*{Approaches to hierarchical clustering}\index{hierarchical clustering!approaches}
-There are two main approaches to hierarchical clustering: \textbf{agglomerative clustering}\index{agglomerative clustering} (bottom-up) and \textbf{divisive clustering}\index{divisive clustering} (top-down). 
+There are two main approaches to hierarchical clustering: \textbf{agglomerative clustering}\index{hierarchical clustering!agglomerative} (bottom-up) and \textbf{divisive clustering}\index{hierarchical clustering!divisive} (top-down). In agglomerative clustering, each data point is initially its own atomic cluster and we merge clusters into larger and larger clusters. Divisive clustering, as the name suggests, is where all data points belong to a single cluster initially, then the cluster is divided into smaller and smaller clusters.
+
+\section{Cluster distance measures}\index{cluster distance measures}
+\ 
+\begin{definition}[Single link]\index{cluster distance measures!single link}
+	The \textbf{smallest} distance between an element in one cluster and an element in another, i.e. $d(C_i, C_j) = \text{min}\{d(x_{ip}, x_{jq})\}$ 
+\end{definition}
+
+\begin{definition}[Complete link]\index{cluster distance measures!complete link}
+	The \textbf{largest} distance between an element in one cluster and an element in another, i.e. $d(C_i, C_j) = \text{max}\{d(x_{ip}, x_{jq})\}$ 
+\end{definition}
+
+\begin{definition}[Average]\index{cluster distance measures!average}
+	The \textbf{average} distance between elements in one cluster and elements in the other, i.e. $d(C_i, C_j) = \text{avg}\{d(x_{ip}, x_{jq})\}$ 
+\end{definition}
+
+\newpage
+\section{Agglomerative clustering}
+\subsection*{Algorithm}
+\begin{enumerate}
+	\item Select a cluster distance measure to use
+	\item Convert all object features into a distance matrix
+	\item Set each object as an atomic cluster (N objects means N clusters at start)
+	\item Repeat until number of clusters is one (or known \# of clusters)
+	\begin{itemize}
+		\item Merge two closest clusters
+		\item Update distance matrix
+	\end{itemize}
+\end{enumerate}
+
+\subsection*{Example}
+Again, very simple algorithm - so an example has been omitted as the lecture example is sufficient.\\
+
+\begin{definition}[Lifetime]\index{lifetime}
+	The distance between that a cluster is created and that it disappears (merges with other clusters during clustering).
+\end{definition}
+
+\begin{definition}[k-cluster lifetime]\index{k-cluster lifetime}
+	The distance from that $K$ clusters emerge to that $K$ clusters vanish (due to the reduction to $K-1$ clusters).
+\end{definition}
+
+\section*{Relevant Issues}
+\begin{itemize}
+	\item How do we determine the number of clusters?
+	\begin{itemize}
+		\item If the number of clusters is known, then we have a termination condition
+		\item We can use the \textbf{K-cluster lifetime} as a range of threshold values on the dendrogram that leads to the identification of $K$ clusters
+		\item Heuristic method: cut the dendrogram tree with maximum life time to find a "proper" $K$
+		\end{itemize}
+	\item Major weakness of agglomerative clustering methods
+	\begin{itemize}
+		\item Can never undo what was done previously...
+		\item Sensitive to cluster distance measures, noise and outliers
+		\item Efficiency of $O(n^2\log n)$, where $n$ is the number of total objects
+	\end{itemize}
+\end{itemize}
+
+\section{Ensemble Clustering}\index{ensemble clustering}
+\textbf{Ensemble clustering} is concerned with the issues that may affect a single clustering algorithm, for example, sensitivity to initialisation, noise, outliers, distance metrics and it may be hard to choose a single algorithm which can handle all types of cluster shapes and sizes. The purpose of ensemble clustering is to utilise the results obtained by multiple clustering analyses for robustness.
+
+\subsection*{Algorithm summary}
+\begin{enumerate}
+	\item Perform clustering analysis by using either different clustering algorithms or running a single clustering algorithm of different conditions, \textbf{leading to multiple partitions}
+	\item Convert clustering results on different partitions into \textbf{binary distance measure}
+	\item Evidence accumulation: form a \textbf{collective distance matrix} based on all the distance matrices
+	\item Apply a hierarchical clustering algorithm (with a proper cluster distance measure) to collective distance matrix and \textbf{use the maximum $k$-cluster lifetime to decide}
+\end{enumerate}
 
 %----------------------------------------------------------------------------------------
 %	Cluster Validation
