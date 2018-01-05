@@ -80,29 +80,18 @@
 \chapter{Introduction to Machine Learning}
 
 \section{Supervised learning}\index{supervised learning}
-In \textbf{supervised learning} problems, there is an input, $X$, an output, $Y$, and the task is to learn the relationship between the input and the output. A training example in supervised learning is the pair ($x$, $y$) where $x$ is the input and $y$ is the target output. We assume a model defined up to a set of parameters, $y = g(x \, \vert \, \theta)$ where $g(\cdot)$ is the model and $\theta$ are its parameters.
+In \textbf{supervised learning} problems, there is an input, $X$, an target output, $Y$, provided by a \textit{teacher} and the task is to learn the relationship between the input and the output. A training example in supervised learning is the pair ($x$, $y$) where $x$ is the input and $y$ is the target output. The labels provided with the training samples are know as the \textbf{ground truth}\index{ground truth}. We assume a model defined up to a set of parameters, $y = g(x \, \vert \, \theta)$ where $g(\cdot)$ is the model and $\theta$ are its parameters.
 \subsection{Classification}
-For a classification\index{supervised learning!classification} problem, the task of the classifier is to assign a class label to a given input.
-
-% TODO: Classification
+For a classification\index{supervised learning!classification} problem, the task of the classifier is to assign a class label to a given input. For example, a classification problem may be to decide whether an image contains a picture of a cat or a dog, or neither.
 
 \subsection{Regression}
-Suppose we want to predict the salary of a Computer Science graduate role. Inputs are the students attributes - degree result, previous experience and other information - that we believe affects a graduate's worth. The output is the predicted salary. Such problems where the output is a continuous number is known as a \textbf{regression}\index{Supervised learning!regression} problem.\\
-
-\begin{figure}[h!]
-	\centering
-  	\includegraphics{Pictures/graph1.pdf}
-\end{figure}
-
-\noindent
-For our model, $y = g(x \, \vert \, \theta)$, $y$ is a number since this is a regression model. In the simple example above, the model optimises the parameters, $\theta$, such that the approximation error is minimised. For out example, the model is linear with the form $y = wx+w_0$ where $w$ and $w_0$ are the parameters optimised for best fit to the training data.
+Suppose we want to predict the salary of a Computer Science graduate role. Inputs are the students attributes - that we believe affects a graduate's worth. The output is the predicted salary. Such problems where the output is a continuous number is known as a \textbf{regression}\index{Supervised learning!regression} problem.
 
 \section{Unsupervised learning}\index{unsupervised learning}
 Unlike in supervised learning, we do not have a supervisor and we only have input data. The task in \textbf{unsupervised learning} is to form a natural understanding of the hidden structure of unlabelled data. There is a structure to the input space such that certain patterns occur more often than others, and we want to see what generally happens and what does not.
 
 \section{Reinforcement learning}\index{reinforcement learning}
-% TODO: Reinforcement learning
-
+In reinforcement learning, there is a \textit{teacher} who provides feedback on the action of an agent, in terms of reward and punishment.
 %----------------------------------------------------------------------------------------
 %	k-Nearest Neighbour
 %----------------------------------------------------------------------------------------
@@ -155,7 +144,7 @@ For regression, we take a sample's $k$ nearest neighbours to estimate its target
 \subsection*{Worked Example}
 Since the $k$-NN classification algorithm is one of the simplest, you should be able to follow it from the lecture slides - hence a worked example has been omitted. It is also trivial to derive the algorithm for k-NN regression.
 
-\section{Neighbour number k}
+\section{Neighbour number $k$}
 The neighbour number $k$ is called the \textbf{hyper-parameter}\index{hyper-parameter} and the processing of determining the best value of $k$ to use is called \textbf{hyper-parameter selection}\index{hyper-parameter selection} or model selection. If our choice of $k$ is too small, we may model noise and if our choice of $k$ is too large, neighbours will include too many samples from other classes.\\
 
 \noindent
