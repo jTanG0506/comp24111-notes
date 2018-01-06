@@ -179,16 +179,20 @@ The number of training samples also plays a role, a small number of training sam
 With the \textbf{holdout method}, the whole dataset is split into two groups, a training set and a testing set. The model is trained using the training set and asked to predict output values for the data in the testing set, which it has never seen before. This evaluation can have a high variance as we may get an unfortunate split as it may depend heavily on which data points end up in the training set and which end up in the testing set. Another drawback is that we may only have a small dataset, so we may not afford to set aside a portion of the dataset for testing.
 
 \subsection{Random subsampling}
-% TODO: Random Subsampling
+In each split of \textbf{random subsampling}\index{random subsampling}, we select a fixed number of samples for testing and the remaining samples are used for training. For each data split, the classifier is training from scratch and its error rate is estimated with the testing examples.
 
 \subsection{k-fold cross validation}\index{model validation!k-fold cross validation}
 \textbf{k-fold cross validation} is one way to improve over the holdout method, the dataset is divided into $k$ partitions and the holdout method is performed $k$ times. Each time, one of the $k$ subsets is used as the testing set and the remaining $k - 1$ subsets are combined and used as the training set. We evaluate the error estimate as the average error across the $k$ trials. The advantage of this method is that it matters less how the dataset gets divided and all the examples in the dataset are eventually used for both training and testing, therefore the variance of the resulting estimate is reduced as $k$ is increased. However, the training has to be done $k$ times, which means this method gets expensive to compute as $k$ is increased.
 
+\newpage
 \subsection{Leave-one-out cross validation}\index{model validation!LOO cross validation}
 \textbf{Leave-one-out cross validation} is the degenerate case for $k$-fold cross validation, with $k$ = $N$, the number of data points in the dataset. As before, the average error is computed and used to evaluate the model. The evaluation given by leave-one-out cross validation error is good, but it is very expensive to compute compared to other methods.
 
 \subsection{Bootstrap}
-% TODO: Bootstrap
+With \textbf{bootstrap}\index{bootstrap}, on each iteration, you randomly select, with replacement, a fixed number of examples to use for training. The remaining examples that were not selected are used for testing - this means that the number of testing samples can change over repeats, as training samples are selected with replacement.
+
+\subsection*{Model Selection (hyper-parameter selection)}
+To select the best model, we run the algorithm with different hyper-parameters, which yields different models and use one of the above validation schemes to calculate an error estimate. It follows that the best model is the one that yields the lowest error estimate. 
 
 \section{Confusion matrix}\index{confusion matrix}
 A confusion matrix is a table with two rows and two columns which allows further analysis rather than just the proportion of correct classifications. For example, if we had a dataset containing 98 examples from Class 1 and 2 examples from Class 2, there may be a classifier which classifies all the observations as Class 1, which yields a overall accuracy of 98\%. However, accuracy is not a reliable metric for this classifier as the classifier would have 100\% recognition rate for Class 1 but 0\% recognition rate for Class 2.\\
@@ -222,6 +226,7 @@ Suppose that we predicted the presence of a disease that a patient and obtain th
 	For the above example, \textbf{TP} = 100, \textbf{TN} = 50, \textbf{FP} = 10 and \textbf{FN} = 5.
 \end{example}
 
+\newpage
 \noindent
 Some questions we may want to ask about our predictions are:
 \begin{enumerate}
@@ -261,6 +266,14 @@ The proportion of predicted positives which were positive.
 \begin{exercise}
 Calculate the sensitivity, specificity and precision for the confusion matrix given above.
 \end{exercise}
+
+\begin{definition}[F1-score]\index{confusion matrix!F1-score}
+The harmonic mean of precision and recall.
+\begin{equation*}
+	2 \cdot \frac{1}{\frac{1}{\text{recall}} + \frac{1}{\text{precision}}}
+	= 2 \cdot \frac{\text{precision} \cdot \text{recall}}{\text{precision + recall}}
+\end{equation*}
+\end{definition}
 
 %----------------------------------------------------------------------------------------
 %	Deep Learning Models
@@ -692,10 +705,6 @@ $n_{.1}$ & $n_{.2}$ & $\cdots$ & $n_{.l}$ & $N$
 \end{tabular}
 \end{table}
 
-\begin{exercise}
-It follows that $N = \binom{n}{2}$, where $n$ is the number of data points. Why is this?
-\end{exercise}
-
 \begin{multicols}{2}
 $$ a = \frac{1}{2}\sum^{k}_{i=1}\sum^{l}_{j=1}n_{ij}(n_{ij} - 1) $$
 $$ b = \frac{1}{2}(\sum^{l}_{j=1}n_{.j} - \sum^{k}_{i=1}\sum^{l}_{j=1}n_{ij}^2)$$
@@ -705,7 +714,14 @@ $$ d = \frac{1}{2}(N^2 + \sum^{k}_{i=1}\sum^{l}_{j=1}n_{ij}^2 - (\sum^{k}_{i=1}n
 \end{multicols}
 
 \section{Weighted Clustering Ensemble}
-% TODO: Weighted Clustering Ensemble
+\subsection*{Motivation}
+The problem with the \textbf{clustering ensemble} algorithm is that it does not distinguish between \textit{non-trivial} and \textit{trivial} partitions so all partitions in clustering ensemble are treated \textbf{equally important}. This algorithm is also sensitive to the cluster distance used in the hierarchical clustering for reaching a consensus.
+
+\subsection*{Solution}
+With \textbf{weighted clustering ensemble}\index{weighted clustering ensemble}, multiple internal and external validity indexes reflecting various aspects are applied to different partitions obtained by initial clustering analysis. \textbf{Internal indexes} are used directly to measure the importance of a partition, quantitatively and objectively. \textbf{External indexes} are used indirectly to measure the importance of a partition via comparing with other partitions used in clustering ensemble for another round of \textit{evidence accumulation}.
+
+\noindent
+The values of these indexes are used as weights to highlight the non-trivial evidence and to diminish the trivial evidence simultaneously. Thus, the weighted clustering ensemble yield better yet robust performance in clustering analysis.
 
 %----------------------------------------------------------------------------------------
 %	INDEX
