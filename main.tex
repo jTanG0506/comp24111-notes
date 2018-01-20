@@ -16,6 +16,7 @@
 \usepackage{multicol}
 \usepackage{parcolumns}
 \usepackage{listings}
+\usepackage{bm}
 
 %----------------------------------------------------------------------------------------
 
@@ -158,6 +159,78 @@ The number of training samples also plays a role, a small number of training sam
 
 \chapter{Linear Classification and Regression}
 
+\section{Linear Regression}
+In \textbf{linear regression}\index{linear regression}, the model formulates the prediction function as $\hat{y} = f(x) = w_0 + w_1x$, indeed a straight line. You have come across this problem in high school before, drawing a \textit{line of best fit} for $(x, y)$ pairs so that you can estimate the output for some $x$. You probably would have been taught to draw the \textit{ideal} line by drawing a line that has equal number of points on each side of the line - in this chapter, we will look at how we optimise this linear regression model.\\
+
+\noindent
+We have a two parameters to optimise, namely $w_0$ (the \textbf{bias parameter}\index{bias parameter}) and $w_1$. To find their optimal setting, we can compute the prediction errors and the ideal settings for the parameters would minimise the prediction error.
+
+\subsection{Sum-of-squares error function}
+A commonly used error function is the \textbf{sum-of-squares}\index{sum-of-squares} error function:
+$$O = (\hat{y_1} - y_1)^2 + (\hat{y_2} - y_2)^2 + \cdots + (\hat{y_n} - y_n)^2 = \sum^n_{i=1}(\hat{y_i} - y_i)^2 = \sum^n_{i=1}(w_1x_i + w_0 - y_i)^2$$
+It follows that our optimisation problem is to minimise $O(w_1, w_0) = \frac{1}{2}\sum^n_{i = 1}(w_1x_i + w_0 - y_i)^2$
+
+\begin{exercise}
+	The $\frac{1}{2}$ is not a typo, why does the $\frac{1}{2}$ not change our optimisation problem?
+\end{exercise}
+
+$$\text{The optimal $w_1$ and $w_0$ satisfy:} \quad \frac{\delta O(w_1, w_0)}{\delta w_0} = 0 \quad \text{and} \quad \frac{\delta O(w_1, w_0)}{\delta w_1} = 0 $$
+
+$$\text{We can write} \quad O(w_1, w_0) = \frac{1}{2} O_i(w_1, w_0) \quad \text{where} \quad O_i(w_1, w_0) = (w_1x_i + w_0 - y_i)^2$$
+
+$$\text{It follows that} \quad \frac{\delta O_i(w_1, w_0)}{\delta w_0} = 2(w_1x_i + w_0 - y_i) \quad \text{and} \quad \frac{\delta O_i(w_1, w_0)}{\delta w_1} = 2(w_1x_i + w_0 - y_i)x_i$$
+
+$$\frac{\delta O(w_1, w_0)}{\delta w_0} = \frac{1}{2}\sum_{i=1}^n\frac{\delta O_i(w_1, w_0)}{\delta w_0} = \sum^n_{i=1}(w_1x_i + w_0 - y_i) = w_1 \sum^n_{i=1} x_i + nw_0 - \sum^n_{i=1} y_i = 0$$
+
+$$\frac{\delta O(w_1, w_0)}{\delta w_1} = \frac{1}{2}\sum_{i=1}^n\frac{\delta O_i(w_1, w_0)}{\delta w_1} = \sum^n_{i=1}(w_1x_i + w_0 - y_i)x_i = w_1 \sum^n_{i=1} x_i^2 + w_0 \sum^n_{i=1} x_i - \sum^n_{i=1} x_iy_i = 0$$
+
+\noindent
+Now from the two equations above, we have a pair of simultaneous equations with $w_1$ and $w_0$ as our unknowns. We can calculate all the summations as they are the $(x, y)$ values in our training samples and $n$ is simply the number of training examples. This model is known as the \textbf{linear least squares}\index{linear least squares} model.
+
+\subsection*{Worked Example}
+Consider the following data set, where we wish to produce a linear least squares model.
+\begin{table}[h]
+\centering
+\begin{tabular}{l|lllll}
+x & 4  & 7  & 11 & 10 & 14 \\ \hline
+y & 62 & 58 & 51 & 58 & 44
+\end{tabular}
+\end{table}
+$$ \sum^5_{i=1} x_i = 4 + 7 + 11 + 10 + 14 = 46 \quad \text{and} \quad \sum^n_{i=5} x_iy_i = 4 \cdot 62 + 7 \cdot 58 + 11 \cdot 51 + 10 \cdot 58 + 14 \cdot 44 = 2411$$
+$$ \sum^n_{i=5} y_i = 62 + 58 + 51 + 58 + 44 = 273 \quad \text{and} \quad \sum^5_{i=1} x_i^2 = 4^2 + 7^2 + 11^2 + 10^2 + 14^2 = 482$$
+
+\noindent
+Now we have the pair of simultaneous equations:
+$$46w_1 + 5w_0 - 273 = 0 \quad \text{and} \quad 482w_1 + 46w_0 - 2411 = 0$$
+
+\noindent
+It follows that $w_1 \approx -1.711$ and $w_0 \approx 70.34$ so we get $\hat{y} = -1.711x + 70.34$
+
+\subsection{Regularised least squares}
+\textbf{Overfitting}\index{overfitting} is the problem where an algorithm produced corresponds too closely to the training dataset (in particular, when it is small) so it may be unsuitable to fit additional data. Overfitting can also occur if the algorithm has modelled noise or random data among the training data. In the least squares model, we can add a \textbf{regularisation term}\index{regularisation term} to the error function in attempt to control overfitting. Our optimisation problem becomes:
+
+$$O_\lambda (w_1, w_0) = \frac{1}{2}\sum^n_{i = 1}(w_1x_i + w_0 - y_i)^2 + \frac{\lambda}{2}(w_0^2 + w_1^2)$$
+
+\subsection*{Hyperparameter $\lambda$}
+Notice in the regularised least squares solution, we have a $\lambda$ in the regularisation term. This is a positive real-valued number, with $\lambda > 0$, set by the user. The purpose of $\lambda$ is to control the balance between the data dependent error function and the regularisation term and is called a hyper-parameter so it can be distinguished from those model parameters that need to be optimised, namely $w_1$ and $w_0$.
+
+\section{Gradient descent}
+Another way we can minimise the error function is by \textbf{gradient descent}\index{gradient descent}. The gradient of the error function indicates the direction in which the error \textit{ascends} the fastest, so we can simply move across the opposite direction, so the error descends the fastest. Say we have the error function $f(w)$ and an initial value of $\bm{w} = [w_0, w_1]$, then we can use $\bm{w}^{(t+1)} = \bm{w}^{(t)} - \eta f'(\bm{w}^{(t)})$ where $\eta > 0$ is the learning rate.
+
+\subsection{Sequential (on-line) training}\index{sequential training}
+In the gradient descent method described above, it would require processing of the entire training set and this can be computationally costly for large datasets. The idea of \textbf{sequential training} is to update model parameters after the presence of one training sample (or a small set of training samples). We will talk about a sequential training process called \textbf{stochastic gradient descent}.
+
+\subsection*{Stochastic gradient descent (SGD)}\index{gradient descent!stochastic gradient descent}
+\begin{definition}[Stochastic gradient descent]
+	A way to estimate the gradient of the error function using a single training sample.
+	$$\bm{w}^{(t+1)} = \bm{w}^{(t)} - \eta (\bm{w_1}^{(t)}x_n + \bm{w_0}^{(t)} - y_n)(x_n + 1)$$
+\end{definition}
+
+\begin{definition}[Mini-batch gradient descent (MBGD)]\index{gradient descent!mini-batch}
+	A way to estimate the gradient of the error function using a small set of training samples.
+	$$\bm{w}^{(t+1)} = \bm{w}^{(t)} - \eta \sum_{n \in I}(\bm{w_1}^{(t)}x_n + \bm{w_0}^{(t)} - y_n)(x_n + 1)$$
+	where $I$ denotes a small set of training samples.
+\end{definition}
 %----------------------------------------------------------------------------------------
 %	Logistic Regression
 %----------------------------------------------------------------------------------------
@@ -718,7 +791,7 @@ $$ d = \frac{1}{2}(N^2 + \sum^{k}_{i=1}\sum^{l}_{j=1}n_{ij}^2 - (\sum^{k}_{i=1}n
 The problem with the \textbf{clustering ensemble} algorithm is that it does not distinguish between \textit{non-trivial} and \textit{trivial} partitions so all partitions in clustering ensemble are treated \textbf{equally important}. This algorithm is also sensitive to the cluster distance used in the hierarchical clustering for reaching a consensus.
 
 \subsection*{Solution}
-With \textbf{weighted clustering ensemble}\index{weighted clustering ensemble}, multiple internal and external validity indexes reflecting various aspects are applied to different partitions obtained by initial clustering analysis. \textbf{Internal indexes} are used directly to measure the importance of a partition, quantitatively and objectively. \textbf{External indexes} are used indirectly to measure the importance of a partition via comparing with other partitions used in clustering ensemble for another round of \textit{evidence accumulation}.
+With \textbf{weighted clustering ensemble}\index{weighted clustering ensemble}, multiple internal and external validity indexes reflecting various aspects are applied to different partitions obtained by initial clustering analysis. \textbf{Internal indexes} are used directly to measure the importance of a partition, quantitatively and objectively. \textbf{External indexes} are used indirectly to measure the importance of a partition via comparing with other partitions used in clustering ensemble for another round of \textit{evidence accumulation}.\\
 
 \noindent
 The values of these indexes are used as weights to highlight the non-trivial evidence and to diminish the trivial evidence simultaneously. Thus, the weighted clustering ensemble yield better yet robust performance in clustering analysis.
