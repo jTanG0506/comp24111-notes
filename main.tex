@@ -46,6 +46,12 @@
 ~\vfill
 \thispagestyle{empty}
 
+\noindent
+\textbf{Contributions}\\
+\noindent
+Chapter 7: Katie Snell (github.com/katieisnell)\\
+
+\ \\
 \noindent Copyright \copyright\ 2017 Jonathan Tang\\
 
 \noindent \textbf{jtang0506.github.io}
@@ -56,12 +62,10 @@
 
 %\usechapterimagefalse % If you don't want to include a chapter image, use this to toggle images off - it can be enabled later with \usechapterimagetrue
 
-%%\chapterimage{chapter_head_1.pdf} % Table of contents heading image
+\chapterimage{chapter_head_1.pdf} % Table of contents heading image
 
 \pagestyle{empty} % No headers
-
 \tableofcontents % Print the table of contents itself
-
 \cleardoublepage % Forces the first chapter to start on an odd page so it's on the right
 
 \pagestyle{fancy} % Print headers again
@@ -239,6 +243,20 @@ In the gradient descent method described above, it would require processing of t
 
 \chapter{Logistic Regression}
 
+\section{Linear basis function model}\index{linear basis}
+Suppose the estimated output variable is a linear combination of fixed nonlinear functions (known as basis functions) of the input. For example $\hat{y} = w_0 + w_1x + w_2x^2 + w_3x^3$ is a linear combination of $1, x, x^2$ and $x^3$ with coefficients $w_0, w_1, w_2, w_3$ respectively. The purpose of incorporating a \textbf{linear basis function model}\index{linear basis function model} is so that it is suitable for non-linear classification and regression.
+
+$$\hat{y} = w_0 + w_1\phi_1(\bm{x}) + w_2\phi_2(\bm{x}) + \cdots + w_D\phi_D(\bm{x}) = \bm{w}^T\bm{\phi(x)}$$
+$$\text{where} \quad \bm{w} = [w_0, w_1, \cdots, w_D]^T \quad \text{and} \quad \bm{\phi(x)} = [1, \phi_1(x), \phi_2(x), \cdots, \phi_D(x)]^T$$
+
+\subsection{Polynomial regression}\index{linear basis!polynomial}
+For a single input variable, if we take $\bm{\phi(x)} = [1, x, x^2, \cdots, x^D]^T$, our linear basis function model is
+$$\hat{y} = w_0 + w_1x + w_2x^2 + \cdots + w_Dx^D$$
+This is known as polynomial regression, and in the case $D = 1$, we get linear regression.
+
+\begin{exercise}
+	It is typical to set $\phi_0(x) = 1$, why is that?
+\end{exercise}
 %----------------------------------------------------------------------------------------
 %	Support Vector Machine
 %----------------------------------------------------------------------------------------
@@ -246,6 +264,8 @@ In the gradient descent method described above, it would require processing of t
 \chapterimage{chapter_head_2.pdf}
 
 \chapter{Support Vector Machine}
+
+\section{Kernel trick}\index{kernel trick}
 
 \section{Model Validation}\index{model validation}
 \subsection{Holdout method}\index{model validation!holdout method}
