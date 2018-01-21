@@ -56,7 +56,7 @@
 
 %\usechapterimagefalse % If you don't want to include a chapter image, use this to toggle images off - it can be enabled later with \usechapterimagetrue
 
-\chapterimage{chapter_head_1.pdf} % Table of contents heading image
+%%\chapterimage{chapter_head_1.pdf} % Table of contents heading image
 
 \pagestyle{empty} % No headers
 
@@ -113,7 +113,7 @@ for each training data point $x_{tr}$
 end
 sort distances
 select $k$ nearest points
-assign most common class to $x_{te}$	
+assign most common class to $x_{te}$
 \end{lstlisting}
 
 \noindent
@@ -265,7 +265,7 @@ In each split of \textbf{random subsampling}\index{random subsampling}, we selec
 With \textbf{bootstrap}\index{bootstrap}, on each iteration, you randomly select, with replacement, a fixed number of examples to use for training. The remaining examples that were not selected are used for testing - this means that the number of testing samples can change over repeats, as training samples are selected with replacement.
 
 \subsection*{Model Selection (hyper-parameter selection)}
-To select the best model, we run the algorithm with different hyper-parameters, which yields different models and use one of the above validation schemes to calculate an error estimate. It follows that the best model is the one that yields the lowest error estimate. 
+To select the best model, we run the algorithm with different hyper-parameters, which yields different models and use one of the above validation schemes to calculate an error estimate. It follows that the best model is the one that yields the lowest error estimate.
 
 \section{Confusion matrix}\index{confusion matrix}
 A confusion matrix is a table with two rows and two columns which allows further analysis rather than just the proportion of correct classifications. For example, if we had a dataset containing 98 examples from Class 1 and 2 examples from Class 2, there may be a classifier which classifies all the observations as Class 1, which yields a overall accuracy of 98\%. However, accuracy is not a reliable metric for this classifier as the classifier would have 100\% recognition rate for Class 1 but 0\% recognition rate for Class 2.\\
@@ -288,7 +288,7 @@ Suppose that we predicted the presence of a disease that a patient and obtain th
 \begin{table}[h]
 \centering
 \begin{tabular}{c|c|cc}
-\multicolumn{2}{c|}{\multirow{2}{*}{n = 165}} & \multicolumn{2}{c}{Predicted Class} \\ \cline{3-4} 
+\multicolumn{2}{c|}{\multirow{2}{*}{n = 165}} & \multicolumn{2}{c}{Predicted Class} \\ \cline{3-4}
 \multicolumn{2}{c|}{} & No & Yes \\ \hline
 \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Actual\\ Class\end{tabular}} & No & 50 & 10 \\
  & Yes & 5 & 100
@@ -370,6 +370,194 @@ The harmonic mean of precision and recall.
 
 \chapter{Generative Models and Naive Bayes}
 
+\section*{Introduction}
+In machine learning, naive Bayes classifiers are a group of \textbf{probabilistic classifiers} which are based on using Bayes’ theorem assuming, naivly, that there is a \textbf{strong independence} between the features. Naive Bayes are probabilistic, meaning that they calculate the probability of each category for a given sample, and then output the category with the highest probability.\\
+
+\noindent
+Naive Bayes is popular method for determining the category of text, with word frequencies as the features. Some examples include: \\
+\begin{enumerate}
+	\item Determining what category an email belongs to, i.e. spam or legitimate, fashion or sports
+	\item Digit recognition
+	\item Face recognition
+\end{enumerate}
+
+\subsection*{Background}
+There are three methodologies to design a model: \\
+\begin{enumerate}
+	\item Model a classification rule directly, for example k-NN, linear classifier, SVM, neural networks
+	\item Model the probability of class memberships given input data, for example logistic regression, probabilistic neural networks
+	\item Make a probabilistic model of data within each class, for example naive Bayes, model-based
+	
+\end{enumerate}
+\ \\
+\noindent
+This brings up an important way of distinguishing these models based on what we want to achieve with the data we have been given; probabilistic models vs non-probabilistic models and discriminative models vs generative models.
+
+\newpage
+\noindent
+The table shows us the difference between the learning models (classifiers) more clearly.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|l|l|}
+		\hline
+		\multicolumn{1}{|l|}{}  & \multicolumn{1}{c|}{\textbf{Probabilistic}}                                                 & \multicolumn{1}{c|}{\textbf{Non-Probabilistic}}                                          \\ \hline
+		\textbf{Discriminative} & \begin{tabular}[c]{@{}l@{}}$\bullet$ Logistic regression\\ $\bullet$ Probabilistic neural networks\end{tabular} & \begin{tabular}[c]{@{}l@{}}$\bullet$ k-NN\\ $\bullet$ Linear classifier\\ $\bullet$ SVM\\ $\bullet$ Neural networks\end{tabular} \\ \hline
+		\textbf{Generative}     & \begin{tabular}[c]{@{}l@{}}$\bullet$ Naive Bayes\\ $\bullet$ Model-based (e.g. GMM)\end{tabular}                & N.A.                                                                                     \\ \hline
+	\end{tabular}
+\end{table}
+
+\section{Probability basics}
+\noindent
+We will define some basic probability notation that will help us to understand how naive Bayes works. \\
+
+\begin{definition}[Prior probability]\index{prior probability}
+	The prior probabilities are the probabilities of an example from the training set belonging to each class:
+	
+	\begin{equation}
+	P(c_i) = \frac{\textrm{number of examples that belong to class}~i}{\textrm{total number of examples}}
+	\end{equation}
+\end{definition}
+
+\begin{definition}[Conditional Probability]\index{conditional probability}
+	Conditional probability is the probability of $x_1$ happening if $x_2$ happens too. We use the notation $P(x_1 \, \vert \, x_2)$.
+\end{definition}
+\ \\ 
+\noindent
+These definitions of probabilities will now be clear with an example of using naive Bayes for discrete-valued features.
+
+\section{Naive Bayes for discrete-valued features}\index{Naive Bayes!discrete}
+\noindent
+Suppose we want to build our classifier to say \textbf{whether a piece of text is about sports or not}. Our training set has 5 sentences: \\
+\begin{itemize}
+	\item “A great game” - Sports
+	\item “The election was over” - Not sports
+	\item “Very clean match” - Sports
+	\item “A clean but forgettable game” - Sports
+	\item “It was a close election” - Not sports
+\end{itemize}
+\ \\
+\noindent
+Lets say we want to classify “A very close game”.
+As naive Bayes is a \textbf{probabilistic classifier}, we want to calculate the probability that the sentence “A very close game” is Sports and also the probability that it is Not sports. \\
+
+\noindent
+Once we have done this, we take the largest probability of the two which determines what category our sentence has been classified as (we want this to be Sports in this case). This is an application of the \textbf{``Maximum A Posterior’’}, or MAP, classification rule. \\
+
+\begin{definition}[MAP Rule]\index{MAP Rule}
+	The MAP rule determines that for an input $x$, find the largest probability from $L$ probabilities that are outputted by a discriminative probabilistic classifier  $P(c_1 \, \vert \, x), \cdots, P(c_L, \, \vert \, x)$. Then we assign $x$ to label $c^*$ if $P(c^* \, \vert \, x)$ is the largest.
+\end{definition}
+\ \\
+In mathematical terms, we want $P(\text{Sports}\, | \,\text{a very close game}) > P(\text{Not sports}\, |\, \text{a very close game})$. \\
+
+\noindent
+Before we start, we need to decide what we shall use as features. In this case, we are comparing words so we will use \textbf{word frequencies}. This means our features will be the counts of each of the words. \\
+
+\noindent
+Now we look at the \textbf{Bayesian rule} (or Baye’s Theorem) which is useful when working with conditional probabilities because it provides a way to ``reverse’’ them. This is exactly what we want. \\
+
+\begin{definition}[Bayesian Rule]\index{Bayesian rule}
+	We define the Bayesian rule as follows:
+	\begin{equation}
+	P(c_i \, \vert \, \textbf{x}) = \frac{P(\textbf{x} \, \vert \, c_i) \cdot P(c_i)}{P(\textbf{x})},~i = 1,2,\cdots,L
+	\end{equation}
+\end{definition}
+\ \\
+\noindent
+In our example, we want to work out $P(\text{Sports} \, \vert \, \text{a very close game})$, so using the Bayesian rule this gives us:
+\begin{equation*}
+P(\text{Sports} \, \vert \, \text{a very close game}) = \frac{P(\text{a very close game}\, \vert \, \text{Sports}) \cdot P(\text{Sports})} {P(\text{a very close game})}
+\end{equation*}
+\ \\
+\noindent
+Note that in our case, we just want to find out which category (Sports or Not sports) has a bigger probability, so we can ignore the divisor, as it is the same for both categories, and just compare:
+\begin{equation*}
+P(\text{a very close game}\, |\, \text{Sports}) \cdot P(\text{Sports}) \quad \text{and} \quad
+P(\text{a very close game}\, |\, \text{Not sports}) \cdot P(\text{Not sports})
+\end{equation*}
+\noindent
+We can calculate these probabilities easily. \\
+
+\noindent 
+Now we count how many times the sentence ``A very close game’’ appears in the Sports category in our training set, and divide it by the total which gives us $P(\text{a very close game} \, \vert \, \text{Sports})$. \\
+
+\noindent
+However, “A very close game” does not appear as a whole sentence in our training set so we will get a probability of 0. This means the model is not useful unless every sentence we want to classify appears in our training set, which defeats the point of using it. \\
+
+\noindent
+So to overcome this issue we make a strong \textbf{naive} assumption that every word in the sentence is \textbf{independent} of the others in the sentence. \\
+
+\noindent
+So this means now that ``A very close game’’ is the same as ``very game close a’’. We write this as: \\
+$$P(\text{a very close game}) = P(\text{a}) \cdot P(\text{very}) \cdot P(\text{close}) \cdot P(\text{game})$$
+\noindent
+So now we can apply this to the conditional probability we were working with before as so: \\
+$$P(\text{a very close game} \, \vert \, \text{Sports}) = P(\text{a $\vert$ Sports}) \cdot P(\text{very $\vert$ Sports}) \cdot P(\text{close $\vert$ Sports}) \cdot P(\text{game $\vert $ Sports})$$
+\noindent
+So now we can do some calculations. We first work out P(Sports) and P(Not sports), which is simply the prior probabilities.\\
+
+\noindent
+So in our example, $P(\text{Sports}) = 3/5$ and $P(\text{Not sports}) = 2/5$. \\
+
+\noindent
+Next we need to calculate each of the conditional probabilities of each word appearing in a class. So we start by calculating $P(\text{game} \vert \text{Sports})$ which is the number of times the word ``game’’ appears in Sports examples in the training set, which is 2, divided by the total number of words in the Sports examples, which is 11. Therefore, $P(\text{game} \vert \text{Sports}) = 2/11$. \\
+
+\noindent
+However, we have a problem when we work out the probability of $P(\text{close} \vert \text{Sports})$ as ``close’’ does not appear in any of our Sports examples. This means the probability is 0. This causes a \textbf{zero conditional probability problem} when we work out the probability of all the words combined as this 0 will make us end up with a zero probability.\\
+
+\noindent
+In order to overcome this, we apply Laplace smoothing. \\
+\begin{definition}[Laplace smoothing]\index{Laplace smoothing}
+	Laplace smoothing is the process of adding 1 to every count so we do not have any counts equalling zero.
+\end{definition}
+
+\noindent
+We adjust our divisor to also add the number of possible words in the whole training set, in this example all possible words are ['a', 'great', 'very', 'over', 'it', 'but', 'game', 'election', 'clean', 'close', 'the', 'was', 'forgettable', 'match'], which is 14. \\
+
+\noindent
+After we apply smoothing, our probabilities are as follows:
+\begin{table}[h]
+	\centering
+	\begin{tabular}{ccc}
+		\textbf{Word} & \textbf{P(Word | Sports)} & \textbf{P(Word | Not sports)} \\
+		a             & 2 + 1 / 11 + 14           & 1 + 1 / 9 + 14                \\
+		very          & 1 + 1 / 11 + 14           & 0 + 1 / 9 + 14                \\
+		close         & 0 + 1 / 11 + 14           & 1 + 1 / 9 + 14                \\
+		game          & 2 + 1 / 11 + 14           & 0 + 1 / 9 + 14               
+	\end{tabular}
+\end{table}
+\ \\
+\noindent
+The final step is to multiple all our non-zero probabilities and see whether Sports or Not sports are bigger, and do not forgot to multiple by the prior probability too. \\
+\begin{equation*}
+P(\text{a} \vert \text{Sports}) \cdot P(\text{very} \vert \text{Sports}) \cdot P(\text{close} \vert \text{Sports}) \cdot P(\text{game} \vert \text{Sports}) \cdot P(\text{Sports}) = 2.76 \cdot 10^{-5} = 0.0000276
+\end{equation*}
+\ \\
+\noindent
+Similarly we have $P(\text{a} \vert \text{Not sports}) = 0.572 \cdot 10^{-5} = 0.00000572$. \\
+
+\noindent
+So we have classified ``A very close game’’ to be in the Sports category using the naive Bayes classifier for discrete-valued features.\\
+
+\newpage
+\section{Naive Bayes for continuous-valued features}
+When we want to model features which are continuous in nature, such as temperature, then our discrete method will not be appropriate. \\
+
+\noindent
+However, the prior probabilities can still be calculated in the same way as the example above. \\
+
+\noindent
+Instead, we \textbf{estimate} the \textbf{mean} and \textbf{variance} for each class and we can use this with the assumption that the attributes are subject to a \textbf{normal distribution} (or Gaussian). \\
+
+\noindent
+Now when we are in the test phase, we can calculate the conditional probabilities modelled with the Gaussian distribution using the equation in our original Bayesian rule above. \\
+\begin{equation}
+P(x_j | c_i) = \frac{1}{{\sigma_{ji} \sqrt {2\pi } }}e^{{{ - \left( {x_j - \mu_{ji} } \right)^2 } \mathord{\left/ {\vphantom {{ - \left( {x - \mu } \right)^2 } {2\sigma ^2 }}} \right. \kern-\nulldelimiterspace} {2\sigma_{ji} ^2 }}}
+\end{equation}
+\ \\
+\noindent
+Note that when $\sigma = 0$, we cannot use the equation but instead we realise that this means that there is \textbf{no spread of data} hence the attribute has only one value. Therefore, this means the probability of getting that attribute is 1. This means we only need to the equation when $\sigma > 0$.
+
 %----------------------------------------------------------------------------------------
 %	Clustering Analysis Basics
 %----------------------------------------------------------------------------------------
@@ -379,7 +567,7 @@ The harmonic mean of precision and recall.
 \chapter{Clustering Analysis Basics}
 
 \section*{Introduction}
-Clustering analysis is the process of finding similarities between data according to the characteristics underlying he data and grouping similar data objects into clusters. A \textbf{cluster}\index{cluster} is a group of data points which are similar to one another within the same group and dissimilar to the points in other groups. Clustering analysis is \textbf{unsupervised} as there are no predefined classes for a training data set. The main approach of clustering analysis is to maximise the intra-cluster similarity and minimise the inter-cluster similarity. Typically, clustering analysis is either used as a stand-alone tool to gain an insight into data distribution or used as a preprocessing step of other algorithms in intelligent systems.\\
+Clustering analysis is the process of finding similarities between data according to the characteristics underlying the data and grouping similar data objects into clusters. A \textbf{cluster}\index{cluster} is a group of data points which are similar to one another within the same group and dissimilar to the points in other groups. Clustering analysis is \textbf{unsupervised} as there are no predefined classes for a training data set. The main approach of clustering analysis is to maximise the intra-cluster similarity and minimise the inter-cluster similarity. Typically, clustering analysis is either used as a stand-alone tool to gain an insight into data distribution or used as a preprocessing step of other algorithms in intelligent systems.\\
 
 \noindent
 The two general tasks of clustering analysis are:
@@ -506,14 +694,15 @@ For binary features, their values can be converted to 1 or 0, then we calculate 
 \centering
 \begin{tabular}{cccc}
 \multicolumn{2}{c}{\multirow{2}{*}{}}       & \multicolumn{2}{c}{y} \\
-\multicolumn{2}{c}{}                        & 1         & 0         \\ \cline{2-4} 
+\multicolumn{2}{c}{}                        & 1         & 0         \\ \cline{2-4}
 \multirow{2}{*}{x} & \multicolumn{1}{c|}{1} & a         & b         \\
-                   & \multicolumn{1}{c|}{0} & c         & d        
+                   & \multicolumn{1}{c|}{0} & c         & d
 \end{tabular}
 \end{table}
 
 \subsection*{Symmetric binary features}\index{binary features!symmetric}
-Binary features are \textbf{symmetric} if both of their states equally valuable and carry the same weight; i.e. nopreference on which outcome should be coded as 1 or 0 , e.g. gender.
+Binary features are \textbf{symmetric} if both of their states equally valuable and carry the same weight; i.e. no
+preference on which outcome should be coded as 1 or 0 , e.g. gender.
 
 \begin{center}
 	$$d(\mathbf{x}, \mathbf{y}) = \frac{b + c}{a + b + c + d}$$
@@ -521,7 +710,8 @@ Binary features are \textbf{symmetric} if both of their states equally valuable 
 
 
 \subsection*{Asymmetric binary features}\index{binary features!asymmetric}
-Binary features are \textbf{asymmetric} if the outcomes of the states not equally important, e.g. the positive and negativeoutcomes of a disease test; the rarest one is set to 1 and the other is 0. Since the number of negative matches are considered unimportant, they are omitted from the calculations.
+Binary features are \textbf{asymmetric} if the outcomes of the states not equally important, e.g. the positive and negative
+outcomes of a disease test; the rarest one is set to 1 and the other is 0. Since the number of negative matches are considered unimportant, they are omitted from the calculations.
 
 \begin{center}
 	$$d(\mathbf{x}, \mathbf{y}) = \frac{b + c}{a + b + c}$$
@@ -618,7 +808,7 @@ The figure above shows how a data space can be partitioned, where each black dot
 	\item Requires prior knowledge of the cluster number
 	\item Incapable of handling clusters of non-convex shape
 	\item Inapplicable to categorical data, since the mean is not defined
-	\item How do we evaluate the k-mean performance? 
+	\item How do we evaluate the k-mean performance?
 \end{itemize}
 
 \subsection*{Example}
@@ -639,17 +829,17 @@ Hierarchical clustering approach\index{hierarchical clustering} is done by seque
 There are two main approaches to hierarchical clustering: \textbf{agglomerative clustering}\index{hierarchical clustering!agglomerative} (bottom-up) and \textbf{divisive clustering}\index{hierarchical clustering!divisive} (top-down). In agglomerative clustering, each data point is initially its own atomic cluster and we merge clusters into larger and larger clusters. Divisive clustering, as the name suggests, is where all data points belong to a single cluster initially, then the cluster is divided into smaller and smaller clusters.
 
 \section{Cluster distance measures}\index{cluster distance measures}
-\ 
+\
 \begin{definition}[Single link]\index{cluster distance measures!single link}
-	The \textbf{smallest} distance between an element in one cluster and an element in another, i.e. $d(C_i, C_j) = \text{min}\{d(x_{ip}, x_{jq})\}$ 
+	The \textbf{smallest} distance between an element in one cluster and an element in another, i.e. $d(C_i, C_j) = \text{min}\{d(x_{ip}, x_{jq})\}$
 \end{definition}
 
 \begin{definition}[Complete link]\index{cluster distance measures!complete link}
-	The \textbf{largest} distance between an element in one cluster and an element in another, i.e. $d(C_i, C_j) = \text{max}\{d(x_{ip}, x_{jq})\}$ 
+	The \textbf{largest} distance between an element in one cluster and an element in another, i.e. $d(C_i, C_j) = \text{max}\{d(x_{ip}, x_{jq})\}$
 \end{definition}
 
 \begin{definition}[Average]\index{cluster distance measures!average}
-	The \textbf{average} distance between elements in one cluster and elements in the other, i.e. $d(C_i, C_j) = \text{avg}\{d(x_{ip}, x_{jq})\}$ 
+	The \textbf{average} distance between elements in one cluster and elements in the other, i.e. $d(C_i, C_j) = \text{avg}\{d(x_{ip}, x_{jq})\}$
 \end{definition}
 
 \newpage
