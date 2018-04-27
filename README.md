@@ -1,4 +1,4 @@
-# COMP24111 Machine Learning and Optimisation
+![](header.png)
 
 ## :question: About
 My (slightly incomplete) course notes based on the COMP24111 course (2017 syllabus).
